@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile Alvin Khoirul</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="./image/logo.png" />
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind Custom Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            animation: {
+              float: "float 6s ease-in-out infinite",
+              "bounce-slow": "bounce 3s infinite",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Custom Styles -->
+    <style>
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+
+      .gradient-blob {
+        background: linear-gradient(
+          135deg,
+          #ff6b6b 0%,
+          #ff8e53 25%,
+          #ff6b6b 50%,
+          #c44569 75%,
+          #9b59b6 100%
+        );
+        filter: blur(1px);
+      }
+
+      .gradient-blob-2 {
+        background: linear-gradient(
+          45deg,
+          #ff8e53 0%,
+          #ffd93d 25%,
+          #6bcf7f 50%,
+          #4d96ff 75%,
+          #9b59b6 100%
+        );
+        filter: blur(1px);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-900 text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

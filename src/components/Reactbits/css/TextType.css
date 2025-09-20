@@ -1,0 +1,39 @@
+.text-type {
+    display: inline-block;
+    white-space: pre-wrap;
+    font-family: "Poppins", sans-serif;
+    font-size: 3rem; /* besar untuk hero */
+    font-weight: 800; /* tebal */
+    color: #ffffff; /* putih */
+
+    /* underline style */
+    text-decoration: underline;
+    text-decoration-thickness: 6px; /* tebal garis */
+    text-underline-offset: 6px; /* jarak garis dari teks */
+    text-decoration-color: #3b82f6; /* biru-500 */
+}
+
+.text-type__cursor {
+    margin-left: 0.3rem;
+    display: inline-block;
+    font-size: 3rem;
+    font-weight: 800;
+    color: #ffffff;
+    animation: blink 0.8s infinite;
+}
+
+.text-type__cursor--hidden {
+    display: none;
+}
+
+@keyframes blink {
+    0%,
+    50%,
+    100% {
+        opacity: 1;
+    }
+    25%,
+    75% {
+        opacity: 0;
+    }
+}
