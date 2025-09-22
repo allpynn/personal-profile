@@ -9,7 +9,7 @@ const Skill = () => {
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
           <h1 class="mb-5 text-4xl font-extrabold leading-none tracking-tight text-white md:text-5xl lg:text-6xl">
-            <span class="underline underline-offset-4 decoration-8 decoration-blue-500">
+            <span class="underline underline-offset-4 decoration-8 decoration-purple-500">
               Skills & Expertise
             </span>
           </h1>

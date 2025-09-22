@@ -2,7 +2,6 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import Navbar from "./components/Navbar.jsx";
-import BannerHero from "./components/BannerHero.jsx";
 import About from "./components/About.jsx";
 import Skill from "./components/Skill.jsx";
 import Experience from "./components/Experience.jsx";

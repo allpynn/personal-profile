@@ -12,7 +12,7 @@ const Experience = () => {
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
           <h1 class="mb-6 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-            <span class="underline underline-offset-4 decoration-8 decoration-blue-500 dark:decoration-blue-600">
+            <span class="underline underline-offset-4 decoration-8 decoration-purple-500 dark:decoration-purple-500">
               Experience & Organization
             </span>
           </h1>
@@ -22,44 +22,26 @@ const Experience = () => {
         </div>
 
         {/* -- Grid PixelTransition -- */}
-        <div class="grid grid-cols-1 sm:grid-cols- lg:grid-cols-3 gap-5 place-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
           {/* Pixel Box 1 */}
-          <div className="flex flex-col items-center space-y-4">
-            <div className="w-72 h-72">
+          <div className="flex flex-col items-center space-y-4 hover:scale-105 transition-transform duration-300">
+            <div className="w-72 h-72 rounded-lg overflow-hidden shadow-lg hover:shadow-purple-500 transition">
               <PixelTransition
                 firstContent={
                   <img
                     src={SMAIT}
-                    alt="Profile Photo"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
+                    alt="SMAIT"
+                    className="w-full h-full object-cover"
                   />
                 }
                 secondContent={
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      display: "grid",
-                      placeItems: "center",
-                      backgroundColor: "#111",
-                    }}
-                  >
-                    <p
-                      style={{
-                        fontWeight: 900,
-                        fontSize: "2rem",
-                        color: "#ffffff",
-                      }}
-                    >
+                  <div className="w-full h-full grid place-items-center bg-[#02182b]">
+                    <p className="font-extrabold text-2xl text-white">
                       VIDEOGRAFI
                     </p>
                   </div>
                 }
-                gridSize={12}
+                gridSize={20}
                 pixelColor="#ffffff"
                 animationStepDuration={0.4}
                 className="custom-pixel-card w-full h-full"
@@ -77,42 +59,24 @@ const Experience = () => {
           </div>
 
           {/* Pixel Box 2 */}
-          <div className="flex flex-col items-center space-y-4">
-            <div className="w-72 h-72">
+          <div className="flex flex-col items-center space-y-4 hover:scale-105 transition-transform duration-300">
+            <div className="w-72 h-72 rounded-lg overflow-hidden shadow-lg hover:shadow-purple-500 transition">
               <PixelTransition
                 firstContent={
                   <img
                     src={UKM}
-                    alt="Profile Photo"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
+                    alt="UKM"
+                    className="w-full h-full object-cover"
                   />
                 }
                 secondContent={
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      display: "grid",
-                      placeItems: "center",
-                      backgroundColor: "#111",
-                    }}
-                  >
-                    <p
-                      style={{
-                        fontWeight: 900,
-                        fontSize: "2rem",
-                        color: "#ffffff",
-                      }}
-                    >
+                  <div className="w-full h-full grid place-items-center bg-[#02182b]">
+                    <p className="font-extrabold text-2xl text-white">
                       UKM BASKET
                     </p>
                   </div>
                 }
-                gridSize={12}
+                gridSize={20}
                 pixelColor="#ffffff"
                 animationStepDuration={0.4}
                 className="custom-pixel-card w-full h-full"
@@ -129,42 +93,22 @@ const Experience = () => {
           </div>
 
           {/* Pixel Box 3 */}
-          <div className="flex flex-col items-center space-y-4">
-            <div className="w-72 h-72">
+          <div className="flex flex-col items-center space-y-4 hover:scale-105 transition-transform duration-300">
+            <div className="w-72 h-72 rounded-lg overflow-hidden shadow-lg hover:shadow-purple-500 transition">
               <PixelTransition
                 firstContent={
                   <img
                     src={HMIF}
-                    alt="Profile Photo"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
+                    alt="HMIF"
+                    className="w-full h-full object-cover"
                   />
                 }
                 secondContent={
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      display: "grid",
-                      placeItems: "center",
-                      backgroundColor: "#111",
-                    }}
-                  >
-                    <p
-                      style={{
-                        fontWeight: 900,
-                        fontSize: "2rem",
-                        color: "#ffffff",
-                      }}
-                    >
-                      HMIF
-                    </p>
+                  <div className="w-full h-full grid place-items-center bg-[#02182b]">
+                    <p className="font-extrabold text-2xl text-white">HMIF</p>
                   </div>
                 }
-                gridSize={12}
+                gridSize={20}
                 pixelColor="#ffffff"
                 animationStepDuration={0.4}
                 className="custom-pixel-card w-full h-full"

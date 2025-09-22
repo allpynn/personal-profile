@@ -1,10 +1,11 @@
 import React from "react";
+import logo from "../assets/image/logo.png";
 
 const Footer = () => {
   return (
-    <footer class="bg-gray-900 text-gray-300 pt-16 pb-8 relative overflow-hidden">
+    <footer class="bg-gray-900 text-gray-300 pt-9 pb-8 relative overflow-hidden">
       <div class="absolute inset-0 opacity-5">
-        <div class="absolute top-10 left-10 w-32 h-32 bg-blue-500 rounded-full blur-3xl"></div>
+        <div class="absolute top-10 left-10 w-32 h-32 bg-purple-500 rounded-full blur-3xl"></div>
         <div class="absolute bottom-10 right-10 w-40 h-40 bg-purple-500 rounded-full blur-3xl"></div>
       </div>
 
@@ -13,7 +14,7 @@ const Footer = () => {
           <div class="flex flex-col items-start fade-in-up">
             <div class="mb-6">
               <img
-                src="./src/assets/image/logo.png"
+                src={logo}
                 alt="Logo"
                 class="w-25 h-28 logo-glow transition-all duration-300 hover:scale-110"
               />
@@ -29,43 +30,43 @@ const Footer = () => {
 
           <div class="fade-in-up">
             <h4 class="text-xl font-bold text-white mb-6 flex items-center">
-              <i class="fas fa-compass mr-2 text-blue-400"></i>
+              <i class="fas fa-compass mr-2 text-purple-500"></i>
               Navigasi
             </h4>
             <ul class="space-y-3">
               <li>
                 <a
                   href="#home"
-                  class="nav-link text-gray-300 hover:text-blue-400 transition flex items-center group"
+                  class="nav-link text-gray-300 hover:text-purple-500 transition flex items-center group"
                 >
-                  <i class="fas fa-home mr-3 text-sm group-hover:text-blue-400 transition"></i>
+                  <i class="fas fa-home mr-3 text-sm group-hover:text-purple-500 transition"></i>
                   <span>Home</span>
                 </a>
               </li>
               <li>
                 <a
                   href="#profile"
-                  class="nav-link text-gray-300 hover:text-blue-400 transition flex items-center group"
+                  class="nav-link text-gray-300 hover:text-purple-500 transition flex items-center group"
                 >
-                  <i class="fas fa-user mr-3 text-sm group-hover:text-blue-400 transition"></i>
+                  <i class="fas fa-user mr-3 text-sm group-hover:text-purple-500 transition"></i>
                   <span>Profile</span>
                 </a>
               </li>
               <li>
                 <a
                   href="#skills"
-                  class="nav-link text-gray-300 hover:text-blue-400 transition flex items-center group"
+                  class="nav-link text-gray-300 hover:text-purple-500 transition flex items-center group"
                 >
-                  <i class="fas fa-code mr-3 text-sm group-hover:text-blue-400 transition"></i>
+                  <i class="fas fa-code mr-3 text-sm group-hover:text-purple-500 transition"></i>
                   <span>Skills</span>
                 </a>
               </li>
               <li>
                 <a
                   href="#experience"
-                  class="nav-link text-gray-300 hover:text-blue-400 transition flex items-center group"
+                  class="nav-link text-gray-300 hover:text-purple-500 transition flex items-center group"
                 >
-                  <i class="fas fa-briefcase mr-3 text-sm group-hover:text-blue-400 transition"></i>
+                  <i class="fas fa-briefcase mr-3 text-sm group-hover:text-purple-500 transition"></i>
                   <span>Experience</span>
                 </a>
               </li>
@@ -74,9 +75,9 @@ const Footer = () => {
                   href="https://wa.me/6282255749407"
                   rel="noopener"
                   target="_blank"
-                  class="nav-link text-gray-300 hover:text-blue-400 transition flex items-center group"
+                  class="nav-link text-gray-300 hover:text-purple-500 transition flex items-center group"
                 >
-                  <i class="fas fa-envelope mr-3 text-sm group-hover:text-blue-400 transition"></i>
+                  <i class="fas fa-envelope mr-3 text-sm group-hover:text-purple-500 transition"></i>
                   <span>Contact</span>
                 </a>
               </li>
@@ -85,7 +86,7 @@ const Footer = () => {
 
           <div class="fade-in-up">
             <h4 class="text-xl font-bold text-white mb-6 flex items-center">
-              <i class="fas fa-share-alt mr-2 text-blue-400"></i>
+              <i class="fas fa-share-alt mr-2 text-purple-500"></i>
               Terhubung
             </h4>
             <p class="text-sm mb-6 text-gray-400">
