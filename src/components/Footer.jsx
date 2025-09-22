@@ -70,17 +70,6 @@ const Footer = () => {
                   <span>Experience</span>
                 </a>
               </li>
-              <li>
-                <a
-                  href="https://wa.me/6282255749407"
-                  rel="noopener"
-                  target="_blank"
-                  class="nav-link text-gray-300 hover:text-purple-500 transition flex items-center group"
-                >
-                  <i class="fas fa-envelope mr-3 text-sm group-hover:text-purple-500 transition"></i>
-                  <span>Contact</span>
-                </a>
-              </li>
             </ul>
           </div>
 

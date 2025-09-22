@@ -27,11 +27,6 @@ const Navbar = () => {
     { label: "About", href: "#about" },
     { label: "Skills", href: "#skills" },
     { label: "Experience", href: "#experience" },
-    {
-      label: "Message Us",
-      href: "https://wa.me/6282255749407",
-      external: true,
-    },
   ];
 
   return (
