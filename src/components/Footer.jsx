@@ -66,7 +66,7 @@ const Footer = () => {
           <div className="lg:col-span-6 overflow-visible">
             <motion.div style={{ x: headerX }}>
 
-              <h2 className="text-6xl md:text-8xl font-display font-black tracking-tighter text-white uppercase leading-[0.9] mb-12">
+              <h2 className="text-5xl sm:text-6xl md:text-8xl font-display font-black tracking-tighter text-white uppercase leading-[0.9] mb-12">
                 LET'S MAKE <br />
                 <span className="text-outline italic">IT HAPPEN.</span>
               </h2>

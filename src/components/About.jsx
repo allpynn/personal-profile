@@ -65,9 +65,9 @@ const About = () => {
           {/* --- LEFT CONTENT --- */}
           <div className="w-full lg:w-1/2 flex flex-col gap-8 md:gap-12 relative z-10">
             <motion.div variants={itemVariants}>
-              <h1 className="font-display font-black text-6xl md:text-8xl lg:text-9xl leading-[0.85] uppercase tracking-tighter mb-4">
+              <h1 className="font-display font-black text-5xl sm:text-6xl md:text-8xl lg:text-9xl leading-[0.85] uppercase tracking-tighter mb-4">
                 <span className="text-gradient">ALVIN</span><br />
-                <span className="bg-white text-black px-4 sm:px-8 inline-block mt-2 transform -rotate-1 hover:rotate-0 transition-transform duration-500 shadow-[0_10px_30px_rgba(79,70,229,0.15)] border-l-4 border-indigo-500">
+                <span className="bg-white text-black px-4 sm:px-8 inline-block mt-3 transform -rotate-1 hover:rotate-0 transition-transform duration-500 shadow-[0_10px_30px_rgba(79,70,229,0.15)] border-l-4 border-indigo-500">
                   KHOIRUL
                 </span>
               </h1>
@@ -88,7 +88,7 @@ const About = () => {
               </div>
 
               <div className="flex items-center gap-4 bg-white/5 w-fit px-5 py-3 rounded-full border border-white/10 backdrop-blur-sm">
-                <div className="relative">
+                <div className="relative flex-shrink-0">
                   <div className="w-2.5 h-2.5 rounded-full bg-indigo-500" />
                   <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-indigo-500 animate-ping" />
                 </div>
@@ -96,7 +96,7 @@ const About = () => {
               </div>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center gap-8 md:gap-12 mt-4">
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-start sm:items-center gap-8 md:gap-12 mt-4">
               {/* SOCIAL ICONS */}
               <div className="flex gap-8">
                 {[
@@ -120,7 +120,7 @@ const About = () => {
               {/* DOWNLOAD CV BUTTON */}
               <a
                 href="#"
-                className="group relative inline-flex items-center gap-3 bg-white text-black px-10 py-5 rounded-2xl font-sans font-black text-sm uppercase tracking-widest overflow-hidden transition-all hover:bg-indigo-50 active:scale-95 shadow-[0_15px_30px_rgba(255,255,255,0.1)] border-b-4 border-indigo-500/20"
+                className="group relative inline-flex items-center gap-3 bg-white text-black px-8 md:px-10 py-4 md:py-5 rounded-2xl font-sans font-black text-xs md:text-sm uppercase tracking-widest overflow-hidden transition-all hover:bg-indigo-50 active:scale-95 shadow-[0_15px_30px_rgba(255,255,255,0.1)] border-b-4 border-indigo-500/20"
               >
                 <span className="relative z-10 flex items-center gap-2">
                   Download CV <Download size={18} className="transition-transform group-hover:translate-y-1" />
@@ -133,10 +133,10 @@ const About = () => {
           </div>
 
           {/* --- RIGHT CONTENT (PHOTO) --- */}
-          <div className="w-full lg:w-1/2 relative flex justify-center lg:justify-end items-center">
+          <div className="w-full lg:w-1/2 relative flex justify-center lg:justify-end items-center mt-12 lg:mt-0">
             <motion.div
               variants={itemVariants}
-              className="relative w-full max-w-[450px] aspect-[4/5] md:aspect-[4/5] rounded-[3rem] overflow-hidden group"
+              className="relative w-full max-w-[450px] aspect-[4/5] md:aspect-[4/5] rounded-[3rem] overflow-hidden group mx-4 md:mx-0"
             >
               <img
                 src={profileImg}
@@ -150,7 +150,7 @@ const About = () => {
                 initial={{ opacity: 0, scale: 0.95, y: 30 }}
                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute bottom-0 left-0 right-6 p-7 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-[2.5rem] flex flex-col gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] group/card hover:bg-white/[0.05] transition-colors duration-500"
+                className="absolute bottom-0 left-0 right-4 sm:right-6 p-5 sm:p-7 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-[2.5rem] flex flex-col gap-5 sm:gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] group/card hover:bg-white/[0.05] transition-colors duration-500"
               >
                 {/* TOP ROW: ROLE & STATUS */}
                 <div className="flex justify-between items-start">
@@ -159,7 +159,7 @@ const About = () => {
                       <div className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
                       <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Active_Status</span>
                     </div>
-                    <h3 className="font-display font-black text-2xl md:text-3xl text-white leading-[0.9] uppercase tracking-tighter">
+                    <h3 className="font-display font-black text-xl sm:text-2xl md:text-3xl text-white leading-[0.9] uppercase tracking-tighter">
                       FULLSTACK<br />
                       <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white/20">DEVELOPER</span>
                     </h3>

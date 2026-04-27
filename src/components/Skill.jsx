@@ -87,16 +87,16 @@ const Skill = () => {
         style={{ opacity: sectionOpacity, scale: sectionScale, y: sectionY }}
         className="container max-w-[1400px] mx-auto relative z-10"
       >
-        <div className="w-full flex flex-col md:flex-row justify-between items-end gap-8 mb-24 overflow-visible">
-          <motion.div style={{ x: headerX }} className="flex-1">
+        <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-24 overflow-visible">
+          <motion.div style={{ x: headerX }} className="flex-1 w-full">
             <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20 mb-6 block">02 / COMPETENCIES</span>
-            <h2 className="text-7xl md:text-9xl font-display font-black tracking-tighter text-white uppercase leading-[0.8]">
+            <h2 className="text-5xl sm:text-7xl md:text-9xl font-display font-black tracking-tighter text-white uppercase leading-[0.8]">
               CORE <br />
               <span className="text-outline italic">STACK.</span>
             </h2>
           </motion.div>
 
-          <motion.div style={{ x: descX }} className="max-w-md">
+          <motion.div style={{ x: descX }} className="max-w-md w-full">
             <ScrollReveal
               text="Architecting digital products with a robust ecosystem of modern technologies and professional creative tools."
               className="text-white/80 text-lg font-sans leading-relaxed text-left md:text-right"
