@@ -1,152 +1,193 @@
-import React from "react";
-import logo from "../assets/image/logo.png";
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Github, Linkedin, Instagram, Mail, ArrowUp, Send } from "lucide-react";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const sectionOpacity = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], [0, 1, 1, 0]);
+  const sectionScale = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], [0.95, 1, 1, 0.95]);
+  const sectionY = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], [50, 0, 0, -50]);
+  
+  const headerX = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], [-100, 0, 0, 100]);
+  const formY = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], [100, 0, 0, -100]);
+
+  const socialLinks = [
+    { icon: Github, href: "https://github.com/allpynn", label: "GitHub", handle: "@allpynn" },
+    { icon: Linkedin, href: "https://www.linkedin.com/in/alvinkhoirul", label: "LinkedIn", handle: "Alvin Khoirul" },
+    { icon: Instagram, href: "https://www.instagram.com/alviin.riz", label: "Instagram", handle: "@alviin.riz" },
+    { icon: Mail, href: "mailto:choirulnarizky89@gmail.com", label: "Email", handle: "Send Mail" },
+  ];
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <footer class="bg-gray-900 text-gray-300 pt-9 pb-8 relative overflow-hidden">
-      <div class="absolute inset-0 opacity-5">
-        <div class="absolute top-10 left-10 w-32 h-32 bg-purple-500 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-10 right-10 w-40 h-40 bg-purple-500 rounded-full blur-3xl"></div>
+    <footer ref={sectionRef} id="contact" className="relative w-full bg-[#030303] pt-40 pb-10 overflow-hidden text-white flex flex-col items-center">
+
+      {/* Kinetic Marquee Top */}
+      <div className="absolute top-0 w-full overflow-hidden border-y border-white/5 py-4 bg-[#0f0122] opacity-30">
+        <motion.div
+          animate={{ x: [0, -1000] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="flex whitespace-nowrap gap-20"
+        >
+          {[...Array(10)].map((_, i) => (
+            <span key={i} className="text-[10px] font-black uppercase tracking-[0.5em] text-white/40">
+              GET IN TOUCH • AVAILABLE FOR HIRE • COLLABORATE • LET'S BUILD SOMETHING •
+            </span>
+          ))}
+        </motion.div>
       </div>
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
-          <div class="flex flex-col items-start fade-in-up">
-            <div class="mb-6">
-              <img
-                src={logo}
-                alt="Logo"
-                class="w-25 h-28 logo-glow transition-all duration-300 hover:scale-110"
-              />
-            </div>
-            <h3 class="text-xl font-bold text-white mb-3 gradient-text">
-              Alvin Khoirul
-            </h3>
-            <p class="text-sm leading-relaxed text-gray-400 max-w-xs">
-              Membangun solusi digital modern dengan sentuhan desain dan
-              fungsionalitas yang maksimal untuk masa depan yang lebih baik.
-            </p>
+      {/* Decorative Background Text */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none opacity-[0.02] overflow-hidden whitespace-nowrap">
+        <h2 className="text-[30vw] font-black leading-none">CONTACT</h2>
+      </div>
+
+      {/* Background Decor */}
+      <div className="absolute inset-0 bg-grid-white opacity-[0.01] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-[#0f0122] opacity-40 rounded-full blur-[150px] pointer-events-none" />
+
+      <motion.div
+        style={{ opacity: sectionOpacity, scale: sectionScale, y: sectionY }}
+        className="container max-w-[1400px] mx-auto px-6 relative z-10"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 items-start mb-40 overflow-visible">
+
+          {/* Left Column: Heading & Status */}
+          <div className="lg:col-span-6 overflow-visible">
+            <motion.div style={{ x: headerX }}>
+
+              <h2 className="text-6xl md:text-8xl font-display font-black tracking-tighter text-white uppercase leading-[0.9] mb-12">
+                LET'S MAKE <br />
+                <span className="text-outline italic">IT HAPPEN.</span>
+              </h2>
+
+              <p className="text-white/40 text-lg font-sans leading-relaxed max-w-sm mb-16">
+                Currently exploring new opportunities and interesting projects. My inbox is always open.
+              </p>
+
+              <div className="flex flex-wrap gap-4 mb-16">
+                {socialLinks.map((link, idx) => (
+                  <motion.a
+                    key={idx}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ y: -5, scale: 1.1 }}
+                    className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 text-white/40 hover:text-white hover:bg-white/10 transition-all font-black uppercase text-[10px] flex items-center gap-2"
+                  >
+                    <link.icon size={16} />
+                    <span className="hidden md:inline">{link.label}</span>
+                  </motion.a>
+                ))}
+              </div>
+
+              <motion.a
+                href="mailto:choirulnarizky89@gmail.com"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-flex items-center gap-4 group p-1 bg-white/[0.05] border border-white/10 rounded-full pr-8 hover:bg-white hover:text-black transition-all duration-500"
+              >
+                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-black">
+                  <Send size={18} />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-black uppercase tracking-widest opacity-40 group-hover:opacity-100 Transition-opacity">Direct Email</span>
+                  <span className="text-sm font-bold tracking-tight">choirulnarizky89@gmail.com</span>
+                </div>
+              </motion.a>
+            </motion.div>
           </div>
 
-          <div class="fade-in-up">
-            <h4 class="text-xl font-bold text-white mb-6 flex items-center">
-              <i class="fas fa-compass mr-2 text-purple-500"></i>
-              Navigasi
-            </h4>
-            <ul class="space-y-3">
-              <li>
-                <a
-                  href="#home"
-                  class="nav-link text-gray-300 hover:text-purple-500 transition flex items-center group"
-                >
-                  <i class="fas fa-home mr-3 text-sm group-hover:text-purple-500 transition"></i>
-                  <span>Home</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#profile"
-                  class="nav-link text-gray-300 hover:text-purple-500 transition flex items-center group"
-                >
-                  <i class="fas fa-user mr-3 text-sm group-hover:text-purple-500 transition"></i>
-                  <span>Profile</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#skills"
-                  class="nav-link text-gray-300 hover:text-purple-500 transition flex items-center group"
-                >
-                  <i class="fas fa-code mr-3 text-sm group-hover:text-purple-500 transition"></i>
-                  <span>Skills</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#experience"
-                  class="nav-link text-gray-300 hover:text-purple-500 transition flex items-center group"
-                >
-                  <i class="fas fa-briefcase mr-3 text-sm group-hover:text-purple-500 transition"></i>
-                  <span>Experience</span>
-                </a>
-              </li>
-            </ul>
-          </div>
+          {/* Right Column: Contact Form */}
+          <div className="lg:col-span-6 overflow-visible">
+            <motion.div
+              style={{ y: formY }}
+              className="bg-white/[0.02] border border-white/5 p-6 md:p-10 rounded-[2rem] backdrop-blur-sm max-w-2xl mx-auto lg:mx-0"
+            >
+              <div className="mb-12 text-right">
+                <span className="text-[10px] font-black uppercase tracking-widest text-white/30 block mb-2">GOT A QUESTION, IDEA, OR PROJECT?</span>
+                <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white uppercase">
+                  WE'D LOVE TO HEAR FROM YOU AND <br className="hidden md:block" />
+                  DISCUSS <span className="text-outline italic">FURTHER!</span>
+                </h3>
+              </div>
 
-          <div class="fade-in-up">
-            <h4 class="text-xl font-bold text-white mb-6 flex items-center">
-              <i class="fas fa-share-alt mr-2 text-purple-500"></i>
-              Terhubung
-            </h4>
-            <p class="text-sm mb-6 text-gray-400">
-              Mari berkolaborasi dan berbagi inspirasi di platform berikut:
-            </p>
-            <div class="flex space-x-4">
-              <a
-                href="https://github.com/allpynn"
-                target="_blank"
-                rel="noopener"
-                class="social-icon bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white p-3 rounded-full text-lg border border-gray-700 hover:border-gray-600 transition-all duration-300"
-                title="GitHub"
+              <form
+                action="https://formspree.io/f/mqakevve"
+                method="POST"
+                className="space-y-8"
               >
-                <i class="fab fa-github"></i>
-              </a>
-              <a
-                href="https://www.linkedin.com/in/alvinkhoirul"
-                rel="noopener"
-                target="_blank"
-                class="social-icon bg-gray-800 hover:bg-blue-600 text-gray-400 hover:text-white p-3 rounded-full text-lg border border-gray-700 hover:border-blue-500 transition-all duration-300"
-                title="LinkedIn"
-              >
-                <i class="fab fa-linkedin"></i>
-              </a>
-              <a
-                href="https://www.instagram.com/alviin.riz"
-                rel="noopener"
-                target="_blank"
-                class="social-icon bg-gray-800 hover:bg-pink-600 text-gray-400 hover:text-white p-3 rounded-full text-lg border border-gray-700 hover:border-pink-500 transition-all duration-300"
-                title="Instagram"
-              >
-                <i class="fab fa-instagram"></i>
-              </a>
-              <a
-                href="https://discord.gg/vREhBBzyGa"
-                rel="noopener"
-                target="_blank"
-                class="social-icon bg-gray-800 hover:bg-purple-600 text-gray-400 hover:text-white p-3 rounded-full text-lg border border-gray-700 hover:border-purple-500 transition-all duration-300"
-                title="Discord"
-              >
-                <i class="fab fa-discord"></i>
-              </a>
-            </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-white/20">FIRST NAME</label>
+                    <input name="first_name" type="text" required placeholder="Your first name" className="w-full bg-transparent border-b border-white/10 py-3 text-white placeholder:text-white/10 focus:outline-none focus:border-white transition-colors font-medium" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-white/20">LAST NAME</label>
+                    <input name="last_name" type="text" required placeholder="Your last name" className="w-full bg-transparent border-b border-white/10 py-3 text-white placeholder:text-white/10 focus:outline-none focus:border-white transition-colors font-medium" />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-white/20">E-MAIL</label>
+                  <input name="email" type="email" required placeholder="your@email.com" className="w-full bg-transparent border-b border-white/10 py-3 text-white placeholder:text-white/10 focus:outline-none focus:border-white transition-colors font-medium" />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-white/20">PHONE</label>
+                  <input name="phone" type="text" placeholder="+62..." className="w-full bg-transparent border-b border-white/10 py-3 text-white placeholder:text-white/10 focus:outline-none focus:border-white transition-colors font-medium" />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-white/20">MESSAGE</label>
+                  <textarea name="message" required placeholder="Tell me about your project..." rows={4} className="w-full bg-transparent border-b border-white/10 py-3 text-white placeholder:text-white/10 focus:outline-none focus:border-white transition-colors font-medium resize-none" />
+                </div>
+
+                <div className="pt-4">
+                  <motion.button
+                    type="submit"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-12 py-5 rounded-full bg-white text-black font-black uppercase tracking-[0.3em] text-xs hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all"
+                  >
+                    SEND MESSAGE
+                  </motion.button>
+                </div>
+              </form>
+            </motion.div>
           </div>
         </div>
 
-        <div class="border-t border-gray-700 mt-16 pt-8">
-          <div class="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
-            <div class="flex items-center mb-4 md:mb-0">
-              <i class="fas fa-coffee mr-2 text-amber-500"></i>
-              <span>
-                © 2025 Alvin Khoirul. Dibuat dengan semangat dan secangkir kopi.
-              </span>
-            </div>
-            <div class="flex items-center space-x-6 text-xs">
-              <span class="flex items-center">
-                <i class="fas fa-heart text-red-500 mr-1"></i>
-                Made with love
-              </span>
-              <span class="flex items-center">
-                <i class="fas fa-code text-blue-400 mr-1"></i>
-                Clean Code
-              </span>
-              <span class="flex items-center">
-                <i class="fas fa-mobile-alt text-green-500 mr-1"></i>
-                Responsive
-              </span>
-            </div>
+        {/* Footer Bottom bar restores */}
+        <div className="pt-8 pb-4 border-t border-white/5 w-full flex flex-col md:flex-row justify-between items-center gap-6 text-zinc-500">
+          <div className="flex items-center gap-2">
+            <span className="text-zinc-400 text-sm font-medium tracking-wide">
+              © {currentYear} Alvin Khoirul. All rights reserved.
+            </span>
           </div>
+
+          <motion.button
+            onClick={scrollToTop}
+            whileHover={{ y: -5 }}
+            className="flex flex-col items-center gap-4 group"
+          >
+            <div className="p-4 rounded-full border border-white/5 group-hover:border-white/20 transition-all">
+              <ArrowUp size={20} className="text-white/20 group-hover:text-white transition-colors" />
+            </div>
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white/10 group-hover:text-white transition-colors">TOP</span>
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
     </footer>
   );
 };

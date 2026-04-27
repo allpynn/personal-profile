@@ -1,402 +1,313 @@
-import React, { useState, useEffect } from "react";
-import logo from "../assets/image/logo.png";
-import { Menu, Home, Code, X, User, Briefcase, Mail } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import logoImg from "../assets/image/logo.png";
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
-  const [activeSection, setActiveSection] = useState("home");
+  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [isLogoHovered, setIsLogoHovered] = useState(false);
+  const lastScrollY = useRef(0);
 
-  const navItems = [
-    { id: "home", label: "Home", icon: Home },
-    { id: "about", label: "About", icon: User },
-    { id: "skills", label: "Skill", icon: Code },
-    { id: "experience", label: "Experience", icon: Briefcase },
+  // Constants
+  const PREMIUM_EASE = [0.16, 1, 0.3, 1];
+
+  // Hide on scroll down, show on scroll up
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < 10) {
+        setIsVisible(true);
+        setIsScrolled(false);
+      } else if (currentScrollY > lastScrollY.current + 5) {
+        // Scrolling down
+        if (!isOpen) setIsVisible(false);
+        setIsScrolled(true);
+      } else if (currentScrollY < lastScrollY.current - 5) {
+        // Scrolling up
+        setIsVisible(true);
+        setIsScrolled(true);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isOpen]);
+
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      setIsVisible(true);
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  const menuItems = [
+    { name: "Home", href: "#home" },
+    { name: "About", href: "#about" },
+    { name: "Skills", href: "#skills" },
+    { name: "Journey", href: "#experience" },
+    { name: "Projects", href: "#projects" },
+    { name: "Contact", href: "#contact" },
   ];
 
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setActiveSection(sectionId);
-      setIsMenuOpen(false);
-    }
+  const secondaryLinks = [
+    { name: "GitHub", href: "https://github.com/allpynn" },
+    { name: "LinkedIn", href: "https://www.linkedin.com/in/alvinkhoirul" },
+    { name: "Instagram", href: "https://www.instagram.com/alviin.riz" },
+    { name: "Discord", href: "https://discord.gg/vREhBBzyGa" },
+  ];
+
+  const legalLinks = [
+    { name: "Privacy Policy", href: "#" },
+    { name: "Terms of Use", href: "#" },
+    { name: "Safety Policy", href: "#" },
+  ];
+
+  const scrollToTop = (e) => {
+    e?.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
+  const curtainLayers = [
+    { color: "#ffffffff" },
+    { color: "#adadadff" },
+    { color: "#000000" },
+    { color: "#0f0122ff" },
+  ];
 
-    const sections = document.querySelectorAll("section[id]");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    sections.forEach((section) => observer.observe(section));
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      sections.forEach((section) => observer.unobserve(section));
-    };
-  }, []);
+  const layerVariants = {
+    initial: { y: "-100%" },
+    animate: (i) => ({
+      y: 0,
+      transition: {
+        duration: 0.8,
+        delay: i * 0.1,
+        ease: PREMIUM_EASE
+      }
+    }),
+    exit: (i) => ({
+      y: "-100%",
+      transition: {
+        duration: 0.65,
+        delay: (curtainLayers.length - 1 - i) * 0.05,
+        ease: PREMIUM_EASE
+      }
+    })
+  };
 
   return (
-    <nav
-      className={`fixed w-full z-50 transition-all duration-500 ${
-        scrollY > 50 ? "py-2" : "py-4"
-      }`}
-    >
-      {/* Main Navbar Container with Glassmorphism */}
-      <div className="max-w-7xl mx-auto px-5">
-        <div
-          className={`relative overflow-hidden rounded-2xl transition-all duration-500 backdrop-blur-xl ${
-            scrollY > 50
-              ? "bg-black/40 border border-purple-400/40 shadow-lg shadow-purple-500/30"
-              : "bg-transparent border border-purple-400"
+    <>
+      <motion.nav
+        initial={{ y: -100, opacity: 0 }}
+        animate={{
+          y: isVisible ? 0 : -100,
+          opacity: isVisible ? 1 : 0,
+        }}
+        transition={{ duration: 0.5, ease: PREMIUM_EASE }}
+        className={`fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-6 md:px-12 py-6 transition-all duration-300 ${isScrolled && !isOpen
+          ? "bg-[#0f0122]/30 backdrop-blur-md border-b border-white/5 shadow-2xl"
+          : "bg-transparent"
           }`}
-        >
-          {/* Multi-layered Animated Background Effects */}
-          <div className="absolute inset-0 overflow-hidden rounded-2xl">
-            {/* Primary Energy Orbs */}
-            <div className="absolute -top-6 -right-6 w-32 h-32 bg-gradient-to-br from-purple-500/30 to-purple-700/20 rounded-full blur-2xl animate-pulse" />
-            <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-gradient-to-tr from-purple-600/20 to-purple-400/10 rounded-full blur-3xl animate-pulse delay-1000" />
-
-            {/* Secondary Floating Particles */}
-            <div className="absolute top-1/2 left-1/4 w-4 h-4 bg-purple-400/40 rounded-full blur-sm animate-ping delay-300" />
-            <div className="absolute top-1/4 right-1/3 w-2 h-2 bg-purple-300/50 rounded-full blur-sm animate-ping delay-700" />
-            <div className="absolute bottom-1/3 left-2/3 w-3 h-3 bg-purple-500/30 rounded-full blur-sm animate-ping delay-1500" />
-
-            {/* Energy Flow Lines */}
-            <div className="absolute inset-0">
-              <div className="absolute top-4 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent animate-pulse" />
-              <div className="absolute bottom-4 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-400/20 to-transparent animate-pulse delay-500" />
-            </div>
-
-            {/* Rotating Energy Ring */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 opacity-10">
-              <div
-                className="w-full h-full border border-purple-500/30 rounded-full animate-spin"
-                style={{ animationDuration: "20s" }}
-              />
-            </div>
+      >
+        {/* Left Container (Hamburger on Desktop, Logo on Mobile) */}
+        <div className="flex items-center gap-4 z-[110] order-first md:order-none">
+          {/* Logo Monogram — Mobile Left */}
+          <div className="md:hidden">
+            <button onClick={scrollToTop} className="flex items-center focus:outline-none">
+              <img src={logoImg} alt="Logo" className="w-9 h-9 object-contain drop-shadow-[0_0_8px_rgba(168,85,247,0.3)]" />
+            </button>
           </div>
-          <div className="relative flex items-center justify-between px-8 py-4">
-            {/* Ultra Futuristic Logo with Matrix Effect */}
-            <div className="flex-shrink-0 group cursor-pointer">
-              <div className="relative">
-                {/* Multiple Glow Layers */}
-                <div className="absolute -inset-3 bg-gradient-to-r from-purple-600 via-purple-500 to-purple-400 rounded-xl blur-lg opacity-20 group-hover:opacity-40 transition-all duration-500 animate-pulse" />
-                <div className="absolute -inset-2 bg-gradient-to-r from-purple-500 to-purple-400 rounded-lg blur opacity-30 group-hover:opacity-60 transition-all duration-300" />
 
-                {/* Logo Container with Matrix Grid */}
-                <div className="col-span-3 md:col-span-2 flex items-center">
-                  <div className="relative items-center justify-center overflow-hidden">
-                    <img
-                      src={logo}
-                      alt="Logo"
-                      className="w-13 h-12 object-contain"
-                    />
-                  </div>
-                </div>
-
-                {/* Floating Status Indicator */}
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full animate-ping" />
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full" />
+          {/* Hamburger — Desktop Left Position */}
+          <div className="hidden md:block">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="group flex items-center gap-3 focus:outline-none text-white font-bold tracking-widest text-sm uppercase"
+            >
+              <div className="flex flex-col gap-1.5 pointer-events-none">
+                <motion.span
+                  animate={isOpen ? { rotate: 45, y: 5 } : { rotate: 0, y: 0 }}
+                  className="w-6 h-[2.5px] bg-white block"
+                />
+                <motion.span
+                  animate={isOpen ? { rotate: -45, y: -5 } : { rotate: 0, y: 0 }}
+                  className="w-6 h-[2.5px] bg-white block"
+                />
               </div>
-            </div>
-
-            {/* Advanced Futuristic Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-1">
-              {navItems.map((item, index) => {
-                const Icon = item.icon;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => scrollToSection(item.id)}
-                    className="group relative"
-                  >
-                    {/* Advanced Button Container */}
-                    <div
-                      className={`relative px-8 py-4 transition-all duration-500 ${
-                        activeSection === item.id
-                          ? "text-white"
-                          : "text-gray-300 hover:text-white"
-                      }`}
-                    >
-                      {/* Multi-layer Active Background */}
-                      <div
-                        className={`absolute inset-0 transition-all duration-500 ${
-                          activeSection === item.id
-                            ? "opacity-100"
-                            : "opacity-0 group-hover:opacity-100"
-                        }`}
-                      >
-                        {/* Main Background */}
-                        <div
-                          className={`absolute inset-0 rounded-2xl transition-all duration-500 ${
-                            activeSection === item.id
-                              ? "bg-gradient-to-r from-purple-600 via-purple-500 to-purple-600 shadow-xl shadow-purple-500/50 scale-100"
-                              : "bg-gradient-to-r from-purple-500/20 via-purple-400/10 to-purple-500/20 backdrop-blur-sm border border-purple-500/30 scale-95 group-hover:scale-100 group-hover:bg-gradient-to-r group-hover:from-purple-500/30 group-hover:via-purple-400/20 group-hover:to-purple-500/30"
-                          }`}
-                        />
-
-                        {/* Energy Glow */}
-                        <div
-                          className={`absolute -inset-1 rounded-2xl blur-md transition-all duration-500 ${
-                            activeSection === item.id
-                              ? "bg-gradient-to-r from-purple-500/50 to-purple-400/50"
-                              : "bg-gradient-to-r from-purple-500/20 to-purple-400/20 group-hover:from-purple-500/30 group-hover:to-purple-400/30"
-                          }`}
-                        />
-                      </div>
-
-                      {/* Holographic Scanning Effect */}
-                      <div
-                        className={`absolute inset-0 overflow-hidden rounded-2xl ${
-                          activeSection === item.id
-                            ? "block"
-                            : "hidden group-hover:block"
-                        }`}
-                      >
-                        {/* Top Scan Line */}
-                        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/90 to-transparent animate-pulse" />
-                        {/* Bottom Scan Line */}
-                        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-300/80 to-transparent animate-pulse delay-300" />
-                        {/* Side Scan Lines */}
-                        <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-purple-400/60 to-transparent animate-pulse delay-150" />
-                        <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-purple-400/60 to-transparent animate-pulse delay-450" />
-                      </div>
-
-                      {/* Content with Advanced Effects */}
-                      <div className="relative flex items-center space-x-3 text-sm font-medium">
-                        {/* Icon with Particle Effect */}
-                        <div className="relative">
-                          <Icon
-                            size={18}
-                            className={`transition-all duration-300 ${
-                              activeSection === item.id
-                                ? "scale-110 rotate-0"
-                                : "group-hover:scale-110 group-hover:rotate-12"
-                            }`}
-                          />
-
-                          {/* Icon Glow */}
-                          {activeSection === item.id && (
-                            <>
-                              <div className="absolute -inset-2 border border-white/30 rounded-full animate-ping" />
-                              <div className="absolute -inset-1 border border-purple-300/50 rounded-full animate-pulse" />
-                            </>
-                          )}
-                        </div>
-
-                        {/* Text with Typewriter Effect */}
-                        <span className="font-mono tracking-wide">
-                          {item.label}
-                        </span>
-
-                        {/* Status LEDs */}
-                        <div className="flex space-x-1">
-                          {[1, 2, 3].map((led) => (
-                            <div
-                              key={led}
-                              className={`w-1 h-1 rounded-full transition-all duration-300 ${
-                                activeSection === item.id
-                                  ? "bg-white animate-pulse"
-                                  : "bg-purple-400/30 group-hover:bg-purple-400 group-hover:animate-pulse"
-                              }`}
-                              style={{ animationDelay: `${led * 150}ms` }}
-                            />
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Advanced Holographic Underline */}
-                      <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 flex items-center space-x-1">
-                        <div
-                          className={`h-px bg-gradient-to-r from-purple-500 via-purple-300 to-purple-500 transition-all duration-500 ${
-                            activeSection === item.id
-                              ? "w-full opacity-100"
-                              : "w-0 opacity-0 group-hover:w-full group-hover:opacity-70"
-                          }`}
-                        />
-                      </div>
-
-                      {/* Corner Brackets */}
-                      {activeSection === item.id && (
-                        <>
-                          <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-white/50 rounded-tl-lg" />
-                          <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-white/50 rounded-tr-lg" />
-                          <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-white/50 rounded-bl-lg" />
-                          <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-white/50 rounded-br-lg" />
-                        </>
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Cyber Mobile Menu Button */}
-            <div className="md:hidden">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="group relative p-3 bg-black/50 rounded-xl border border-purple-500/30 hover:border-purple-500/50 transition-all duration-300"
-              >
-                <div className="absolute inset-0 bg-purple-500/10 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative">
-                  {isMenuOpen ? (
-                    <X
-                      size={20}
-                      className="text-purple-400 transition-transform duration-300 rotate-180"
-                    />
-                  ) : (
-                    <Menu
-                      size={20}
-                      className="text-purple-400 transition-transform duration-300"
-                    />
-                  )}
-                </div>
-              </button>
-            </div>
-          </div>
-          {/* Cyber Grid Pattern */}
-          <div className="absolute inset-0 pointer-events-none opacity-10">
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage: `radial-gradient(circle at 25% 25%, purple 1px, transparent 1px)`,
-                backgroundSize: "20px 20px",
-              }}
-            />
+              <span className="hidden md:block">
+                {isOpen ? "Close" : "Menu"}
+              </span>
+            </button>
           </div>
         </div>
-      </div>
 
-      {/* Futuristic Mobile Navigation */}
-      <div
-        className={`md:hidden transition-all duration-500 ${
-          isMenuOpen
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 -translate-y-4 pointer-events-none"
-        }`}
-      >
-        <div className="max-w-6xl mx-auto px-6 mt-4">
-          <div className="bg-black/90 backdrop-blur-xl rounded-2xl border border-purple-500/30 shadow-2xl shadow-purple-500/20 overflow-hidden">
-            {/* Mobile Menu Header */}
-            <div className="px-6 py-4 bg-gradient-to-r from-purple-500/20 to-transparent border-b border-purple-500/20">
-              <h3 className="text-purple-400 font-mono text-sm">
-                NAVIGATION_MENU
-              </h3>
-            </div>
+        {/* Center Container (Desktop Logo Only) */}
+        <div className="hidden md:block absolute left-1/2 -translate-x-1/2 overflow-visible">
+          <div
+            onMouseEnter={() => setIsLogoHovered(true)}
+            onMouseLeave={() => setIsLogoHovered(false)}
+            onClick={scrollToTop}
+            className="flex items-center justify-center p-2 relative group cursor-pointer"
+          >
+            <motion.div
+              animate={{ x: isLogoHovered ? -100 : 0 }}
+              transition={{ duration: 0.6, ease: PREMIUM_EASE }}
+              className="relative z-10"
+            >
+              <img src={logoImg} alt="Logo" className="w-10 h-10 object-contain drop-shadow-[0_0_8px_rgba(168,85,247,0.3)] hover:scale-105 transition-transform" />
+            </motion.div>
 
-            {/* Mobile Menu Items */}
-            <div className="p-4 space-y-2">
-              {navItems.map((item, index) => {
-                const Icon = item.icon;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => scrollToSection(item.id)}
-                    className="group w-full"
-                    style={{ animationDelay: `${index * 100}ms` }}
-                  >
-                    <div
-                      className={`relative p-4 rounded-xl transition-all duration-300 ${
-                        activeSection === item.id
-                          ? "bg-gradient-to-r from-purple-500/30 to-purple-400/20 border-l-4 border-purple-400"
-                          : "bg-black/30 hover:bg-purple-500/10 border-l-4 border-transparent hover:border-purple-500/50"
-                      }`}
-                    >
-                      {/* Scanning Animation */}
-                      <div className="absolute inset-0 overflow-hidden rounded-xl">
-                        <div
-                          className={`absolute top-0 left-0 h-full w-0.5 bg-gradient-to-b from-purple-500 to-transparent transition-all duration-500 ${
-                            activeSection === item.id
-                              ? "opacity-100"
-                              : "opacity-0 group-hover:opacity-70"
-                          }`}
-                        />
-                      </div>
+            <AnimatePresence>
+              {isLogoHovered && (
+                <motion.div
+                  initial={{ opacity: 0, x: -60 }}
+                  animate={{ opacity: 1, x: -40 }}
+                  exit={{ opacity: 0, x: -60 }}
+                  transition={{ duration: 0.5, ease: PREMIUM_EASE }}
+                  className="absolute left-[100%] text-2xl font-bold tracking-tighter text-white whitespace-nowrap drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]"
+                >
+                  ALVIN <span className="italic font-light opacity-80 uppercase">KHOIRUL</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
 
-                      <div className="relative flex items-center space-x-4">
-                        <div className="relative">
-                          <Icon
-                            size={20}
-                            className={`transition-all duration-300 ${
-                              activeSection === item.id
-                                ? "text-purple-400 scale-110"
-                                : "text-gray-400 group-hover:text-purple-400 group-hover:scale-110"
-                            }`}
-                          />
+        {/* Right Container (Hamburger on Mobile, GitHub on Desktop) */}
+        <div className="flex items-center gap-6 z-[110] order-last md:order-none">
+          {/* Hamburger — Mobile Right Position */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="group flex flex-col gap-1.5 focus:outline-none p-2"
+            >
+              <motion.span
+                animate={isOpen ? { rotate: 45, y: 5 } : { rotate: 0, y: 0 }}
+                className="w-6 h-[2.5px] bg-white block transition-colors duration-300"
+              />
+              <motion.span
+                animate={isOpen ? { rotate: -45, y: -5 } : { rotate: 0, y: 0 }}
+                className="w-6 h-[2.5px] bg-white block transition-colors duration-300"
+              />
+            </button>
+          </div>
 
-                          {/* Digital Pulse */}
-                          {activeSection === item.id && (
-                            <div className="absolute -inset-2 border border-purple-400/50 rounded-full animate-ping" />
-                          )}
-                        </div>
+          {/* GitHub — Desktop Only */}
+          <div className="hidden md:block">
+            <a
+              href="https://github.com/allpynn"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-sm font-bold tracking-widest uppercase hover:text-purple-400 transition-colors text-white"
+            >
+              GitHub <ArrowUpRight size={14} />
+            </a>
+          </div>
+        </div>
+      </motion.nav>
 
-                        <div className="flex-1 text-left">
-                          <span
-                            className={`font-mono font-medium transition-colors duration-300 ${
-                              activeSection === item.id
-                                ? "text-purple-400"
-                                : "text-gray-300 group-hover:text-white"
-                            }`}
-                          >
-                            {item.label}
-                          </span>
-                          {activeSection === item.id && (
-                            <div className="text-xs text-purple-400/70 font-mono">
-                              ACTIVE_MODULE
-                            </div>
-                          )}
-                        </div>
+      {/* Menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            key="overlay-container"
+            exit={{ opacity: 1 }}
+            transition={{ duration: 1.2 }}
+            className="fixed inset-0 z-[90] overflow-hidden"
+          >
+            <motion.div
+              key="backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => setIsOpen(false)}
+              className="absolute inset-0 bg-black/70 backdrop-blur-sm pointer-events-auto"
+            />
 
-                        {/* Status Indicator */}
-                        <div className="flex flex-col items-center">
-                          <div
-                            className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                              activeSection === item.id
-                                ? "bg-purple-400 animate-pulse"
-                                : "bg-gray-600 group-hover:bg-purple-500"
-                            }`}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+            {/* Curtain layers */}
+            {curtainLayers.map((layer, i) => (
+              <motion.div
+                key={`layer-${i}`}
+                custom={i}
+                variants={layerVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                style={{ backgroundColor: layer.color, zIndex: 91 + i }}
+                className="absolute inset-0 h-[calc(100vh-140px)] rounded-b-[40px] shadow-2xl border-b border-white/5"
+              />
+            ))}
 
-            {/* Mobile Menu Footer */}
-            <div className="px-6 py-3 bg-gradient-to-r from-transparent to-purple-500/10 border-t border-purple-500/20">
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-green-400/70 font-mono">
-                  STATUS: ONLINE
-                </span>
-                <div className="flex space-x-1">
-                  {[1, 2, 3].map((dot) => (
-                    <div
-                      key={dot}
-                      className="w-1 h-1 bg-purple-400 rounded-full animate-pulse"
-                      style={{ animationDelay: `${dot * 200}ms` }}
-                    />
+            <motion.div
+              key="menu-content"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{
+                y: "-100%",
+                opacity: 0,
+                transition: { duration: 0.65, delay: 0, ease: PREMIUM_EASE }
+              }}
+              transition={{ duration: 0.6, delay: 0.5, ease: PREMIUM_EASE }}
+              style={{ zIndex: 100 }}
+              className="relative h-[calc(100vh-140px)] w-full flex items-start px-8 md:px-24 overflow-y-auto pt-24 md:pt-32 pb-12 pointer-events-auto"
+            >
+              <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start gap-8">
+                <div className="flex flex-col gap-1 md:gap-2">
+                  {menuItems.map((item, i) => (
+                    <motion.div key={item.name} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 + (i * 0.05) }} className="overflow-hidden">
+                      <a href={item.href} onClick={() => setIsOpen(false)} className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-[-0.04em] hover:text-[#4f46e5] transition-colors block leading-[1.0] uppercase">
+                        {item.name}
+                      </a>
+                    </motion.div>
                   ))}
                 </div>
+
+                <div className="flex flex-col gap-10 md:text-right pt-6 md:pt-10">
+                  <div>
+                    <div className="flex flex-col md:items-end gap-2">
+                      {secondaryLinks.map((link, i) => (
+                        <motion.a 
+                          key={link.name} 
+                          href={link.href} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.8 + (i * 0.05) }}
+                          className="text-white/40 hover:text-white transition-colors text-xs md:text-lg font-bold flex items-center gap-2 group uppercase tracking-widest"
+                        >
+                          <span className="md:order-last">{link.name}</span>
+                          <ArrowUpRight size={10} className="opacity-0 group-hover:opacity-100 transition-all -translate-y-1" />
+                        </motion.a>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap md:justify-end gap-4 border-t border-white/5 pt-6">
+                    {legalLinks.map((link) => (
+                      <a key={link.name} href={link.href} className="text-[8px] font-black tracking-[0.2em] text-white/10 hover:text-white uppercase transition-colors">
+                        {link.name}
+                      </a>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

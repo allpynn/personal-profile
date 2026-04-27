@@ -8,68 +8,35 @@
     <!-- Favicon -->
     <link rel="icon" href="./src/assets/image/logo.png" />
 
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&family=Outfit:wght@300..900&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Font Awesome -->
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
     />
-
-    <!-- Tailwind Custom Config -->
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            animation: {
-              float: "float 6s ease-in-out infinite",
-              "bounce-slow": "bounce 3s infinite",
-            },
-          },
-        },
-      };
-    </script>
-
-    <!-- Custom Styles -->
-    <style>
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0px);
-        }
-        50% {
-          transform: translateY(-20px);
-        }
-      }
-
-      .gradient-blob {
-        background: linear-gradient(
-          135deg,
-          #ff6b6b 0%,
-          #ff8e53 25%,
-          #ff6b6b 50%,
-          #c44569 75%,
-          #9b59b6 100%
-        );
-        filter: blur(1px);
-      }
-
-      .gradient-blob-2 {
-        background: linear-gradient(
-          45deg,
-          #ff8e53 0%,
-          #ffd93d 25%,
-          #6bcf7f 50%,
-          #4d96ff 75%,
-          #9b59b6 100%
-        );
-        filter: blur(1px);
-      }
-    </style>
   </head>
-  <body class="bg-gray-900 text-white">
+  <body class="bg-black text-white selection:bg-white selection:text-black">
     <div id="root"></div>
+    <script>
+      window.onerror = function(msg, url, lineNo, columnNo, error) {
+        document.getElementById("root").innerHTML = "<div style='color:red; background:black; padding:20px; z-index:9999; position:fixed; top:0; left:0; width:100%; height:100vh;'><h1>GLOBAL CRASH</h1><p>" + msg + "</p><pre>" + (error && error.stack ? error.stack : "") + "</pre></div>";
+        return false;
+      };
+      window.addEventListener("unhandledrejection", function(e) {
+        document.getElementById("root").innerHTML = "<div style='color:red; background:black; padding:20px; z-index:9999; position:fixed; top:0; left:0; width:100%; height:100vh;'><h1>PROMISE CRASH</h1><p>" + e.reason + "</p></div>";
+      });
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
