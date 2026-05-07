@@ -1,35 +1,36 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import ScrollReveal from "./Reactbits/ScrollReveal";
-import HMIF from "../assets/image/HMIF.jpg";
-import SMAIT from "../assets/image/AULIYA-VIDEO.jpg";
-import UKM from "../assets/image/UKM-BASKET.jpg";
 
 const Experience = () => {
   const experiences = [
     {
-      title: "Juara 2 Lomba Videografi",
-      org: "SMAIT AL-Auliya",
-      desc: "Tingkat SMA Se-Balikpapan",
-      image: SMAIT,
-      tag: "VIDEOGRAFI",
-      year: "2023"
-    },
-    {
-      title: "Manager",
-      org: "UKM Basket UAD",
-      desc: "Universitas Ahmad Dahlan 2023/2025",
-      image: UKM,
-      tag: "ORGANIZATION",
-      year: "2024"
+      title: "Information Technology Intern",
+      org: "PT. Kilang Pertamina Internasional",
+      desc: "PT. Kilang Pertamina Internasional internship program for 2025/2026, focusing on computer vision and machine learning projects.",
+      tag: "INTERNSHIP",
+      year: "2025 - 2026"
     },
     {
       title: "Staff Minat Dan Bakat",
       org: "HMIF UAD",
       desc: "Himpunan Mahasiswa Informatika 2024/2025",
-      image: HMIF,
-      tag: "DEVELOPMENT",
-      year: "2024"
+      tag: "ORGANIZATION",
+      year: "2024 - 2025"
+    },
+    {
+      title: "Manager",
+      org: "UKM Basket UAD",
+      desc: "Universitas Ahmad Dahlan 2023/2025",
+      tag: "ORGANIZATION",
+      year: "2023 - 2025"
+    },
+    {
+      title: "Juara 2 Lomba Videografi",
+      org: "SMAIT AL-Auliya",
+      desc: "Tingkat SMA Se-Balikpapan",
+      tag: "COMPETITION",
+      year: "2022"
     }
   ];
 
@@ -100,14 +101,6 @@ const Experience = () => {
                   <span className="text-zinc-400 font-medium capitalize text-lg">{exp.org}</span>
                   <p className="text-zinc-600 text-sm max-w-2xl leading-relaxed">{exp.desc}</p>
                 </div>
-              </div>
-
-              <div className="relative w-full md:w-48 aspect-video md:aspect-square rounded-2xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-1000 border border-white/5">
-                <img
-                  src={exp.image}
-                  alt={exp.title}
-                  className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-1000"
-                />
               </div>
 
               <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-0 bg-white group-hover:h-12 transition-all duration-700 rounded-full" />
