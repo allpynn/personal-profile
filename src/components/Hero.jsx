@@ -1,19 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { Suspense, lazy } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import LightRays from "./LightRays";
+import useIsMobile from "../utils/useIsMobile";
+
+const LightRays = lazy(() => import("./LightRays"));
 
 const Hero = () => {
   const { scrollY } = useScroll();
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile, { passive: true });
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const isMobile = useIsMobile(768);
 
   const moveLeft1 = useTransform(scrollY, [0, 800], isMobile ? [0, 0] : [0, -350]);
   const moveRight = useTransform(scrollY, [0, 800], isMobile ? [0, 0] : [0, 350]);
@@ -27,22 +20,41 @@ const Hero = () => {
       id="home"
       className="relative min-h-[90vh] w-full overflow-hidden bg-black flex flex-col justify-center items-center pt-24 pb-8 px-4 sm:px-6 md:px-12 select-none"
     >
-      {/* LIGHT RAYS WebGL BACKGROUND (Desktop) / CSS Ambient (Mobile) */}
+      {/* LIGHT RAYS: Desktop WebGL / Mobile Pure CSS Glow (0ms startup) */}
       <div className="absolute inset-0 z-0 opacity-60 pointer-events-none">
-        <LightRays
-          raysOrigin="top-center"
-          raysColor="#2a1b4d"
-          raysSpeed={0.5}
-          lightSpread={0.8}
-          rayLength={1.5}
-          fadeDistance={0.8}
-          saturation={0.8}
-          followMouse={!isMobile}
-          mouseInfluence={0.08}
-          noiseAmount={0.05}
-          distortion={0.05}
-          className="w-full h-full"
-        />
+        {isMobile ? (
+          <div className="w-full h-full relative overflow-hidden">
+            <div 
+              className="absolute inset-0 opacity-80"
+              style={{
+                background: 'radial-gradient(ellipse 90% 70% at 50% -10%, rgba(99, 102, 241, 0.4) 0%, rgba(42, 27, 77, 0.5) 45%, transparent 80%)'
+              }}
+            />
+            <div 
+              className="absolute inset-0 opacity-30"
+              style={{
+                background: 'conic-gradient(from 180deg at 50% 0%, transparent 40%, rgba(168, 85, 247, 0.25) 48%, rgba(129, 140, 248, 0.35) 50%, rgba(168, 85, 247, 0.25) 52%, transparent 60%)'
+              }}
+            />
+          </div>
+        ) : (
+          <Suspense fallback={null}>
+            <LightRays
+              raysOrigin="top-center"
+              raysColor="#2a1b4d"
+              raysSpeed={0.5}
+              lightSpread={0.8}
+              rayLength={1.5}
+              fadeDistance={0.8}
+              saturation={0.8}
+              followMouse={true}
+              mouseInfluence={0.08}
+              noiseAmount={0.05}
+              distortion={0.05}
+              className="w-full h-full"
+            />
+          </Suspense>
+        )}
       </div>
 
       {/* --- BACKGROUND ELEMENTS (Optimized for Mobile GPU) --- */}

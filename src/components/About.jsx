@@ -168,17 +168,13 @@ const About = () => {
                 </div>
 
                 {/* BOTTOM ROW: METRICS */}
-                <div className="grid grid-cols-2 gap-4 pt-6 border-t border-white/5">
+                <div className="flex items-center justify-between pt-6 border-t border-white/5">
                   <div className="flex flex-col gap-1">
                     <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white/20">Location_ID</span>
                     <div className="flex items-center gap-2">
                       <MapPin size={12} className="text-white/40" />
                       <span className="text-xs font-bold tracking-tight text-white/80 uppercase">YOGYAKARTA</span>
                     </div>
-                  </div>
-                  <div className="flex flex-col gap-1 text-right border-l border-white/5 pl-4">
-                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white/20">Core_Version</span>
-                    <span className="text-xs font-bold tracking-widest text-indigo-400 uppercase">2022_OP.01</span>
                   </div>
                 </div>
 

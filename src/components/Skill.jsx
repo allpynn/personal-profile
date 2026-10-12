@@ -1,7 +1,57 @@
-import React, { useMemo, useRef, useState, useEffect } from "react";
+import React, { useMemo, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import LogoLoop from "./Reactbits/LogoLoop";
 import ScrollReveal from "./Reactbits/ScrollReveal";
+import useIsMobile from "../utils/useIsMobile";
+
+import reactIcon from "../assets/icons/react.svg";
+import typescriptIcon from "../assets/icons/typescript.svg";
+import nextjsIcon from "../assets/icons/nextjs.svg";
+import javascriptIcon from "../assets/icons/javascript.svg";
+import nodejsIcon from "../assets/icons/nodejs.svg";
+import laravelIcon from "../assets/icons/laravel.svg";
+import phpIcon from "../assets/icons/php.svg";
+import mysqlIcon from "../assets/icons/mysql.svg";
+import mongodbIcon from "../assets/icons/mongodb.svg";
+import pythonIcon from "../assets/icons/python.svg";
+import cplusplusIcon from "../assets/icons/cplusplus.svg";
+import tailwindcssIcon from "../assets/icons/tailwindcss.svg";
+import bootstrapIcon from "../assets/icons/bootstrap.svg";
+import gitIcon from "../assets/icons/git.svg";
+import dockerIcon from "../assets/icons/docker.svg";
+import jupyterIcon from "../assets/icons/jupyter.svg";
+import vscodeIcon from "../assets/icons/vscode.svg";
+import githubIcon from "../assets/icons/github.svg";
+import figmaIcon from "../assets/icons/figma.svg";
+import androidstudioIcon from "../assets/icons/androidstudio.svg";
+import coreldrawIcon from "../assets/icons/coreldraw.svg";
+import laragonIcon from "../assets/icons/laragon.svg";
+
+const LOCAL_ICONS = {
+  react: reactIcon,
+  typescript: typescriptIcon,
+  nextjs: nextjsIcon,
+  javascript: javascriptIcon,
+  nodejs: nodejsIcon,
+  laravel: laravelIcon,
+  php: phpIcon,
+  mysql: mysqlIcon,
+  mongodb: mongodbIcon,
+  python: pythonIcon,
+  cplusplus: cplusplusIcon,
+  tailwindcss: tailwindcssIcon,
+  bootstrap: bootstrapIcon,
+  git: gitIcon,
+  docker: dockerIcon,
+  jupyter: jupyterIcon,
+  visualstudiocode: vscodeIcon,
+  vscode: vscodeIcon,
+  github: githubIcon,
+  figma: figmaIcon,
+  androidstudio: androidstudioIcon,
+  coreldraw: coreldrawIcon,
+  laragon: laragonIcon,
+};
 
 const TECH_STACK = [
   { name: "React", icon: "react", color: "#61DAFB" },
@@ -34,14 +84,7 @@ const TOOLS = [
 
 const Skill = () => {
   const sectionRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile, { passive: true });
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const isMobile = useIsMobile(768);
   
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -55,34 +98,13 @@ const Skill = () => {
   const headerX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], isMobile ? [0, 0, 0, 0] : [-50, 0, 0, 50]);
   const descX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], isMobile ? [0, 0, 0, 0] : [50, 0, 0, -50]);
 
-  const getIconUrl = (slug) => {
-    const deviconList = [
-      "react", "typescript", "javascript", "nextjs", "nodejs",
-      "laravel", "php", "mysql", "mongodb", "python",
-      "cplusplus", "tailwindcss", "bootstrap", "git",
-      "docker", "jupyter", "vscode", "photoshop"
-    ];
+  const getIconUrl = (slug) => LOCAL_ICONS[slug] || '';
 
-    const mappedSlug = {
-      'visualstudiocode': 'vscode',
-      'adobephotoshop': 'photoshop',
-    }[slug] || slug;
-
-    if (deviconList.includes(mappedSlug)) {
-      return `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${mappedSlug}/${mappedSlug}-original.svg`;
-    }
-
-    return `https://cdn.simpleicons.org/${slug}/white`;
-  };
-
-  const toolItems = useMemo(() => TOOLS.map(tool => {
-    let url = getIconUrl(tool.icon);
-    return {
-      logo: url,
-      name: tool.name,
-      link: "#"
-    };
-  }), []);
+  const toolItems = useMemo(() => TOOLS.map(tool => ({
+    logo: getIconUrl(tool.icon),
+    name: tool.name,
+    link: "#"
+  })), []);
 
   return (
     <section ref={sectionRef} id="skills" className="relative w-full bg-black px-6 md:px-12 py-20 md:py-32 overflow-hidden text-white flex flex-col items-center select-none">
@@ -133,7 +155,6 @@ const Skill = () => {
                   width="48"
                   height="48"
                   className="w-10 h-10 md:w-12 md:h-12 grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
-                  onError={(e) => { e.target.src = `https://cdn.simpleicons.org/${tech.icon}/white`; }}
                 />
               </div>
               <span className="relative z-10 text-[9px] font-black uppercase tracking-widest text-white/20 group-hover:text-white transition-colors duration-500 text-center px-1">

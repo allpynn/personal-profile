@@ -1,6 +1,7 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import ScrollReveal from "./Reactbits/ScrollReveal";
+import useIsMobile from "../utils/useIsMobile";
 
 const Experience = () => {
   const experiences = [
@@ -35,14 +36,7 @@ const Experience = () => {
   ];
 
   const sectionRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile, { passive: true });
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const isMobile = useIsMobile(768);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,

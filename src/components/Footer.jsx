@@ -1,17 +1,11 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Github, Linkedin, Instagram, Mail, ArrowUp, Send } from "lucide-react";
+import useIsMobile from "../utils/useIsMobile";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile, { passive: true });
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const isMobile = useIsMobile(768);
 
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({

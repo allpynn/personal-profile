@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Github, ChevronDown, ChevronUp } from "lucide-react";
 import ScrollReveal from "./Reactbits/ScrollReveal";
+import useIsMobile from "../utils/useIsMobile";
 import ProjectTahfidz from "../assets/image/tahfidz.webp";
 import ProjectKalimantan from "../assets/image/kalimantan.webp";
 import ProjectWorkout from "../assets/image/workout.webp";
@@ -68,14 +69,7 @@ const PROJECTS = [
 
 const Project = () => {
   const [showAll, setShowAll] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile, { passive: true });
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const isMobile = useIsMobile(768);
   
   const visibleProjects = showAll ? PROJECTS : PROJECTS.slice(0, 3);
   const sectionRef = useRef(null);
