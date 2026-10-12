@@ -121,3 +121,48 @@
   transform: translateY(0);
 }
 
+/* ============================================
+   MOBILE PERFORMANCE OPTIMIZATIONS
+   ============================================ */
+@media (max-width: 767px) {
+  /* Disable expensive CSS mask on grid overlay */
+  .bg-grid-white {
+    display: none !important;
+  }
+
+  /* Remove all backdrop-blur on mobile — very expensive on mid-range phones */
+  * {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Disable CSS transitions longer than 300ms on mobile */
+  .transition-all {
+    transition-duration: 200ms !important;
+  }
+
+  /* content-visibility: auto lets browser skip layout/paint for off-screen sections */
+  #about, #skills, #experience, #projects, #contact {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 600px;
+  }
+
+  /* Remove decorative hover translate on mobile (touch has no hover state) */
+  .group:hover .group-hover\:translate-x-4 {
+    transform: none !important;
+  }
+
+  /* Pause marquee animation when page not visible */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee,
+    .logoloop__track {
+      animation-play-state: paused !important;
+    }
+  }
+}
+
+/* GPU layer hint for scrolling sections */
+section {
+  isolation: isolate;
+}
+

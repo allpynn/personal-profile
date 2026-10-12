@@ -1,15 +1,18 @@
-import { StrictMode } from "react";
+import { StrictMode, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import Hero from "./components/Hero.jsx";
-import Skill from "./components/Skill.jsx";
-import Project from "./components/Project.jsx";
-import Experience from "./components/Experience.jsx";
-import Footer from "./components/Footer.jsx";
-import Navbar from "./components/Navbar.jsx";
-import About from "./components/About.jsx";
-
 import React, { Component } from "react";
+
+// Critical path — loaded immediately
+import Navbar from "./components/Navbar.jsx";
+import Hero from "./components/Hero.jsx";
+
+// Below-the-fold — lazy loaded after initial paint
+const About      = lazy(() => import("./components/About.jsx"));
+const Skill      = lazy(() => import("./components/Skill.jsx"));
+const Experience = lazy(() => import("./components/Experience.jsx"));
+const Project    = lazy(() => import("./components/Project.jsx"));
+const Footer     = lazy(() => import("./components/Footer.jsx"));
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -37,17 +40,23 @@ class ErrorBoundary extends Component {
   }
 }
 
+// Minimal skeleton shown while lazy sections load
+const SectionFallback = () => (
+  <div style={{ minHeight: "100vh", backgroundColor: "#000" }} />
+);
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ErrorBoundary>
-
       <Navbar />
       <Hero />
-      <About />
-      <Skill />
-      <Experience />
-      <Project />
-      <Footer />
+      <Suspense fallback={<SectionFallback />}>
+        <About />
+        <Skill />
+        <Experience />
+        <Project />
+        <Footer />
+      </Suspense>
     </ErrorBoundary>
   </StrictMode>
 );

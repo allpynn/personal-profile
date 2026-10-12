@@ -2,8 +2,10 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Instagram, Download, ExternalLink, MapPin } from "lucide-react";
 import profileImg from "../assets/image/fotoprofile.webp";
+import useReducedMotion from "../utils/useReducedMotion";
 
 const About = () => {
+  const reduced = useReducedMotion();
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -40,12 +42,12 @@ const About = () => {
     >
       {/* --- BACKGROUND ELEMENTS --- */}
       <div className="absolute inset-0 bg-grid-white opacity-[0.03] pointer-events-none" />
-      <div className="absolute top-0 right-0 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-white/5 rounded-full blur-[60px] md:blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-white/5 rounded-full blur-[60px] md:blur-[120px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[200px] md:w-[600px] h-[200px] md:h-[600px] bg-white/5 rounded-full blur-[50px] md:blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[200px] md:w-[600px] h-[200px] md:h-[600px] bg-white/5 rounded-full blur-[50px] md:blur-[120px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-[1400px] mx-auto">
-        {/* --- WATERMARK TEXT --- */}
-        <div className="absolute -top-20 -left-10 opacity-5 pointer-events-none select-none">
+        {/* Watermark — hidden on mobile for performance */}
+        <div className="hidden md:block absolute -top-20 -left-10 opacity-5 pointer-events-none select-none">
           <h2 className="font-display font-black text-[12rem] md:text-[20rem] leading-none uppercase tracking-tighter">
             ABOUT
           </h2>
@@ -53,8 +55,8 @@ const About = () => {
 
         <motion.div
           variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
+          initial={reduced ? false : "hidden"}
+          whileInView={reduced ? undefined : "visible"}
           viewport={{ once: true, amount: 0.15 }}
           className="flex flex-col lg:flex-row items-center gap-16 lg:gap-32 relative mt-6 md:mt-12"
         >
@@ -83,10 +85,10 @@ const About = () => {
                 </p>
               </div>
 
-              <div className="flex items-center gap-4 bg-white/5 w-fit px-5 py-3 rounded-full border border-white/10 backdrop-blur-sm">
+              <div className="flex items-center gap-4 bg-white/5 w-fit px-5 py-3 rounded-full border border-white/10">
                 <div className="relative flex-shrink-0">
                   <div className="w-2.5 h-2.5 rounded-full bg-indigo-500" />
-                  <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-indigo-500 animate-ping" />
+                  {!reduced && <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-indigo-500 animate-ping" />}
                 </div>
                 <span className="text-white/80 font-sans text-sm md:text-base font-medium">Available for new opportunities 🚀</span>
               </div>
@@ -147,11 +149,11 @@ const About = () => {
 
               {/* HIGH-END DASHBOARD OVERLAY */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 30 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute bottom-0 left-0 right-4 sm:right-6 p-5 sm:p-7 bg-zinc-950/80 sm:bg-white/[0.04] backdrop-blur-md border border-white/10 rounded-[2.5rem] flex flex-col gap-5 sm:gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] group/card hover:bg-white/[0.05] transition-colors duration-500"
+              initial={reduced ? false : { opacity: 0, scale: 0.95, y: 30 }}
+              whileInView={reduced ? undefined : { opacity: 1, scale: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute bottom-0 left-0 right-4 sm:right-6 p-5 sm:p-7 bg-zinc-950/90 sm:bg-white/[0.04] border border-white/10 rounded-[2.5rem] flex flex-col gap-5 sm:gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] group/card hover:bg-white/[0.05] transition-colors duration-500"
               >
                 {/* TOP ROW: ROLE & STATUS */}
                 <div className="flex justify-between items-start">

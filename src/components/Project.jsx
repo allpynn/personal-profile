@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Github, ChevronDown, ChevronUp } from "lucide-react";
 import ScrollReveal from "./Reactbits/ScrollReveal";
-import useIsMobile from "../utils/useIsMobile";
+import useReducedMotion from "../utils/useReducedMotion";
 import ProjectTahfidz from "../assets/image/tahfidz.webp";
 import ProjectKalimantan from "../assets/image/kalimantan.webp";
 import ProjectWorkout from "../assets/image/workout.webp";
@@ -69,7 +69,7 @@ const PROJECTS = [
 
 const Project = () => {
   const [showAll, setShowAll] = useState(false);
-  const isMobile = useIsMobile(768);
+  const reduced = useReducedMotion();
   
   const visibleProjects = showAll ? PROJECTS : PROJECTS.slice(0, 3);
   const sectionRef = useRef(null);
@@ -79,12 +79,11 @@ const Project = () => {
     offset: ["start end", "end start"]
   });
 
-  const sectionOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
-  const sectionScale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], isMobile ? [1, 1, 1, 1] : [0.98, 1, 1, 0.98]);
-  const sectionY = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], isMobile ? [0, 0, 0, 0] : [50, 0, 0, -50]);
-  
-  const headerX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], isMobile ? [0, 0, 0, 0] : [-50, 0, 0, 50]);
-  const descX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], isMobile ? [0, 0, 0, 0] : [50, 0, 0, -50]);
+  const sectionOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], reduced ? [1, 1, 1, 1] : [0, 1, 1, 0]);
+  const sectionScale   = useTransform(scrollYProgress, [0, 0.2, 0.8, 1],   reduced ? [1, 1, 1, 1] : [0.98, 1, 1, 0.98]);
+  const sectionY       = useTransform(scrollYProgress, [0, 0.2, 0.8, 1],   reduced ? [0, 0, 0, 0] : [50, 0, 0, -50]);
+  const headerX        = useTransform(scrollYProgress, [0, 0.3, 0.7, 1],   reduced ? [0, 0, 0, 0] : [-50, 0, 0, 50]);
+  const descX          = useTransform(scrollYProgress, [0, 0.3, 0.7, 1],   reduced ? [0, 0, 0, 0] : [50, 0, 0, -50]);
 
   return (
     <section ref={sectionRef} id="projects" className="relative w-full bg-[#030303] px-6 md:px-12 pt-20 md:pt-40 pb-10 overflow-hidden text-white flex flex-col items-center select-none">
@@ -122,11 +121,11 @@ const Project = () => {
                 <motion.div
                   layout
                   key={project.title}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  className="group relative flex flex-col bg-white/[0.02] border border-white/5 rounded-[2.5rem] overflow-hidden hover:bg-white/[0.04] transition-all duration-700"
+                  initial={reduced ? false : { opacity: 0, scale: 0.9 }}
+                  animate={reduced ? undefined : { opacity: 1, scale: 1 }}
+                  exit={reduced ? undefined : { opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  className="group relative flex flex-col bg-white/[0.02] border border-white/5 rounded-[2rem] md:rounded-[2.5rem] overflow-hidden hover:bg-white/[0.04] transition-colors duration-500"
                 >
                   {/* Image Container */}
                   <div className="relative aspect-[4/3] overflow-hidden">

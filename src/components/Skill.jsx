@@ -2,18 +2,17 @@ import React, { useMemo, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import LogoLoop from "./Reactbits/LogoLoop";
 import ScrollReveal from "./Reactbits/ScrollReveal";
-import useIsMobile from "../utils/useIsMobile";
+import useReducedMotion from "../utils/useReducedMotion";
 
 import reactIcon from "../assets/icons/react.svg";
-import typescriptIcon from "../assets/icons/typescript.svg";
-import nextjsIcon from "../assets/icons/nextjs.svg";
+import pythonIcon from "../assets/icons/python.svg";
+import coreldrawIcon from "../assets/icons/coreldraw.svg";
 import javascriptIcon from "../assets/icons/javascript.svg";
 import nodejsIcon from "../assets/icons/nodejs.svg";
 import laravelIcon from "../assets/icons/laravel.svg";
 import phpIcon from "../assets/icons/php.svg";
 import mysqlIcon from "../assets/icons/mysql.svg";
-import mongodbIcon from "../assets/icons/mongodb.svg";
-import pythonIcon from "../assets/icons/python.svg";
+import figmaIcon from "../assets/icons/figma.svg";
 import cplusplusIcon from "../assets/icons/cplusplus.svg";
 import tailwindcssIcon from "../assets/icons/tailwindcss.svg";
 import bootstrapIcon from "../assets/icons/bootstrap.svg";
@@ -22,22 +21,27 @@ import dockerIcon from "../assets/icons/docker.svg";
 import jupyterIcon from "../assets/icons/jupyter.svg";
 import vscodeIcon from "../assets/icons/vscode.svg";
 import githubIcon from "../assets/icons/github.svg";
-import figmaIcon from "../assets/icons/figma.svg";
 import androidstudioIcon from "../assets/icons/androidstudio.svg";
-import coreldrawIcon from "../assets/icons/coreldraw.svg";
 import laragonIcon from "../assets/icons/laragon.svg";
+import blenderIcon from "../assets/icons/blender.svg";
+
+// Loop-specific colored variants (visible on dark background)
+import javascriptLoopIcon from "../assets/icons/javascript-loop.svg";
+import nodejsLoopIcon from "../assets/icons/nodejs-loop.svg";
+import mysqlLoopIcon from "../assets/icons/mysql-loop.svg";
+import dockerLoopIcon from "../assets/icons/docker-loop.svg";
+import gitLoopIcon from "../assets/icons/git-loop.svg";
 
 const LOCAL_ICONS = {
   react: reactIcon,
-  typescript: typescriptIcon,
-  nextjs: nextjsIcon,
+  python: pythonIcon,
+  coreldraw: coreldrawIcon,
   javascript: javascriptIcon,
   nodejs: nodejsIcon,
   laravel: laravelIcon,
   php: phpIcon,
   mysql: mysqlIcon,
-  mongodb: mongodbIcon,
-  python: pythonIcon,
+  figma: figmaIcon,
   cplusplus: cplusplusIcon,
   tailwindcss: tailwindcssIcon,
   bootstrap: bootstrapIcon,
@@ -47,29 +51,33 @@ const LOCAL_ICONS = {
   visualstudiocode: vscodeIcon,
   vscode: vscodeIcon,
   github: githubIcon,
-  figma: figmaIcon,
   androidstudio: androidstudioIcon,
-  coreldraw: coreldrawIcon,
   laragon: laragonIcon,
+  blender: blenderIcon,
+  'javascript-loop': javascriptLoopIcon,
+  'nodejs-loop': nodejsLoopIcon,
+  'mysql-loop': mysqlLoopIcon,
+  'docker-loop': dockerLoopIcon,
+  'git-loop': gitLoopIcon,
 };
 
 const TECH_STACK = [
   { name: "React", icon: "react", color: "#61DAFB" },
-  { name: "TypeScript", icon: "typescript", color: "#3178C6" },
-  { name: "Next.js", icon: "nextjs", color: "#FFFFFF" },
-  { name: "JavaScript", icon: "javascript", color: "#F7DF1E" },
-  { name: "Node.js", icon: "nodejs", color: "#339933" },
+  { name: "Python", icon: "python", color: "#3776AB" },
+  { name: "CorelDraw", icon: "coreldraw", color: "#00A550" },
+  { name: "JavaScript", icon: "javascript", loopIcon: "javascript-loop", color: "#F7DF1E" },
+  { name: "Node.js", icon: "nodejs", loopIcon: "nodejs-loop", color: "#339933" },
   { name: "Laravel", icon: "laravel", color: "#FF2D20" },
   { name: "PHP", icon: "php", color: "#777BB4" },
-  { name: "MySQL", icon: "mysql", color: "#4479A1" },
-  { name: "MongoDB", icon: "mongodb", color: "#47A248" },
-  { name: "Python", icon: "python", color: "#3776AB" },
+  { name: "MySQL", icon: "mysql", loopIcon: "mysql-loop", color: "#4479A1" },
+  { name: "Figma", icon: "figma", color: "#F24E1E" },
   { name: "C++", icon: "cplusplus", color: "#00599C" },
   { name: "Tailwind CSS", icon: "tailwindcss", color: "#06B6D4" },
-  { name: "Bootstrap", icon: "bootstrap", color: "#7952B3" },
-  { name: "Git", icon: "git", color: "#F05032" },
-  { name: "Docker", icon: "docker", color: "#2496ED" },
+  { name: "Android Studio", icon: "androidstudio", color: "#3DDC84" },
+  { name: "Git", icon: "git", loopIcon: "git-loop", color: "#F05032" },
+  { name: "Docker", icon: "docker", loopIcon: "docker-loop", color: "#2496ED" },
   { name: "Jupyter", icon: "jupyter", color: "#F37626" },
+  { name: "Blender", icon: "blender", color: "#E87D0D" },
 ];
 
 const TOOLS = [
@@ -84,25 +92,24 @@ const TOOLS = [
 
 const Skill = () => {
   const sectionRef = useRef(null);
-  const isMobile = useIsMobile(768);
+  const reduced = useReducedMotion();
   
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"]
   });
 
-  const sectionOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
-  const sectionScale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], isMobile ? [1, 1, 1, 1] : [0.98, 1, 1, 0.98]);
-  const sectionY = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], isMobile ? [0, 0, 0, 0] : [50, 0, 0, -50]);
-  
-  const headerX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], isMobile ? [0, 0, 0, 0] : [-50, 0, 0, 50]);
-  const descX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], isMobile ? [0, 0, 0, 0] : [50, 0, 0, -50]);
+  const sectionOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], reduced ? [1, 1, 1, 1] : [0, 1, 1, 0]);
+  const sectionScale   = useTransform(scrollYProgress, [0, 0.2, 0.8, 1],   reduced ? [1, 1, 1, 1] : [0.98, 1, 1, 0.98]);
+  const sectionY       = useTransform(scrollYProgress, [0, 0.2, 0.8, 1],   reduced ? [0, 0, 0, 0] : [50, 0, 0, -50]);
+  const headerX        = useTransform(scrollYProgress, [0, 0.3, 0.7, 1],   reduced ? [0, 0, 0, 0] : [-50, 0, 0, 50]);
+  const descX          = useTransform(scrollYProgress, [0, 0.3, 0.7, 1],   reduced ? [0, 0, 0, 0] : [50, 0, 0, -50]);
 
   const getIconUrl = (slug) => LOCAL_ICONS[slug] || '';
 
-  const toolItems = useMemo(() => TOOLS.map(tool => ({
-    logo: getIconUrl(tool.icon),
-    name: tool.name,
+  const toolItems = useMemo(() => TECH_STACK.map(tech => ({
+    logo: getIconUrl(tech.loopIcon || tech.icon),
+    name: tech.name,
     link: "#"
   })), []);
 

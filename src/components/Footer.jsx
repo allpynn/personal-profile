@@ -1,11 +1,11 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Github, Linkedin, Instagram, Mail, ArrowUp, Send } from "lucide-react";
-import useIsMobile from "../utils/useIsMobile";
+import useReducedMotion from "../utils/useReducedMotion";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const isMobile = useIsMobile(768);
+  const reduced = useReducedMotion();
 
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -13,12 +13,11 @@ const Footer = () => {
     offset: ["start end", "end start"]
   });
 
-  const sectionOpacity = useTransform(scrollYProgress, [0, 0.2, 0.85, 1], [0, 1, 1, 0]);
-  const sectionScale = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], isMobile ? [1, 1, 1, 1] : [0.98, 1, 1, 0.98]);
-  const sectionY = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], isMobile ? [0, 0, 0, 0] : [50, 0, 0, -50]);
-  
-  const headerX = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], isMobile ? [0, 0, 0, 0] : [-50, 0, 0, 50]);
-  const formY = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], isMobile ? [0, 0, 0, 0] : [50, 0, 0, -50]);
+  const sectionOpacity = useTransform(scrollYProgress, [0, 0.2, 0.85, 1], reduced ? [1, 1, 1, 1] : [0, 1, 1, 0]);
+  const sectionScale   = useTransform(scrollYProgress, [0, 0.4, 0.8, 1],  reduced ? [1, 1, 1, 1] : [0.98, 1, 1, 0.98]);
+  const sectionY       = useTransform(scrollYProgress, [0, 0.4, 0.8, 1],  reduced ? [0, 0, 0, 0] : [50, 0, 0, -50]);
+  const headerX        = useTransform(scrollYProgress, [0, 0.4, 0.8, 1],  reduced ? [0, 0, 0, 0] : [-50, 0, 0, 50]);
+  const formY          = useTransform(scrollYProgress, [0, 0.4, 0.8, 1],  reduced ? [0, 0, 0, 0] : [50, 0, 0, -50]);
 
   const socialLinks = [
     { icon: Github, href: "https://github.com/allpynn", label: "GitHub", handle: "@allpynn" },
@@ -52,7 +51,7 @@ const Footer = () => {
 
       {/* Background Decor */}
       <div className="absolute inset-0 bg-grid-white opacity-[0.01] pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-[350px] md:w-[800px] h-[350px] md:h-[800px] bg-[#0f0122] opacity-40 rounded-full blur-[70px] md:blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[250px] md:w-[800px] h-[250px] md:h-[800px] bg-[#0f0122] opacity-30 md:opacity-40 rounded-full blur-[60px] md:blur-[150px] pointer-events-none" />
 
       <motion.div
         style={{ opacity: sectionOpacity, scale: sectionScale, y: sectionY }}
