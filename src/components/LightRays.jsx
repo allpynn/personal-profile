@@ -56,8 +56,22 @@ const LightRays = ({
   const [isVisible, setIsVisible] = useState(false);
   const observerRef = useRef(null);
 
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches;
+  });
+
   useEffect(() => {
-    if (!containerRef.current) return;
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches;
+      setIsMobile(mobile);
+    };
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile || !containerRef.current) return;
 
     observerRef.current = new IntersectionObserver(
       entries => {
@@ -75,10 +89,10 @@ const LightRays = ({
         observerRef.current = null;
       }
     };
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
-    if (!isVisible || !containerRef.current) return;
+    if (isMobile || !isVisible || !containerRef.current) return;
 
     if (cleanupFunctionRef.current) {
       cleanupFunctionRef.current();
@@ -93,7 +107,7 @@ const LightRays = ({
       if (!containerRef.current) return;
 
       const renderer = new Renderer({
-        dpr: Math.min(window.devicePixelRatio, 2),
+        dpr: Math.min(window.devicePixelRatio, 1.25),
         alpha: true
       });
       rendererRef.current = renderer;
@@ -238,7 +252,7 @@ void main() {
       const updatePlacement = () => {
         if (!containerRef.current || !renderer) return;
 
-        renderer.dpr = Math.min(window.devicePixelRatio, 2);
+        renderer.dpr = Math.min(window.devicePixelRatio, 1.25);
 
         const { clientWidth: wCSS, clientHeight: hCSS } = containerRef.current;
         renderer.setSize(wCSS, hCSS);
@@ -382,11 +396,32 @@ void main() {
       mouseRef.current = { x, y };
     };
 
-    if (followMouse) {
-      window.addEventListener('mousemove', handleMouseMove);
+    if (followMouse && !isMobile) {
+      window.addEventListener('mousemove', handleMouseMove, { passive: true });
       return () => window.removeEventListener('mousemove', handleMouseMove);
     }
-  }, [followMouse]);
+  }, [followMouse, isMobile]);
+
+  if (isMobile) {
+    return (
+      <div
+        className={`w-full h-full pointer-events-none z-[3] overflow-hidden relative ${className}`.trim()}
+      >
+        <div 
+          className="absolute inset-0 opacity-80"
+          style={{
+            background: 'radial-gradient(ellipse 90% 70% at 50% -10%, rgba(99, 102, 241, 0.4) 0%, rgba(42, 27, 77, 0.5) 45%, transparent 80%)'
+          }}
+        />
+        <div 
+          className="absolute inset-0 opacity-30"
+          style={{
+            background: 'conic-gradient(from 180deg at 50% 0%, transparent 40%, rgba(168, 85, 247, 0.25) 48%, rgba(129, 140, 248, 0.35) 50%, rgba(168, 85, 247, 0.25) 52%, transparent 60%)'
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div

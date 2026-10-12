@@ -1,13 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Github, ChevronDown, ChevronUp } from "lucide-react";
 import ScrollReveal from "./Reactbits/ScrollReveal";
-import ProjectTahfidz from "../assets/image/tahfidz.png";
-import ProjectKalimantan from "../assets/image/kalimantan.png";
-import ProjectWorkout from "../assets/image/workout.png";
-import ProjectImg1 from "../assets/image/project1.png";
-import ProjectImg2 from "../assets/image/project2.png";
-import ProjectImg3 from "../assets/image/project3.png";
+import ProjectTahfidz from "../assets/image/tahfidz.webp";
+import ProjectKalimantan from "../assets/image/kalimantan.webp";
+import ProjectWorkout from "../assets/image/workout.webp";
+import ProjectImg1 from "../assets/image/project1.webp";
+import ProjectImg2 from "../assets/image/project2.webp";
+import ProjectImg3 from "../assets/image/project3.webp";
 
 const PROJECTS = [
   {
@@ -68,6 +68,14 @@ const PROJECTS = [
 
 const Project = () => {
   const [showAll, setShowAll] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile, { passive: true });
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
   
   const visibleProjects = showAll ? PROJECTS : PROJECTS.slice(0, 3);
   const sectionRef = useRef(null);
@@ -77,25 +85,25 @@ const Project = () => {
     offset: ["start end", "end start"]
   });
 
-  const sectionOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const sectionScale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.9, 1, 1, 0.9]);
-  const sectionY = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [100, 0, 0, -100]);
+  const sectionOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
+  const sectionScale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], isMobile ? [1, 1, 1, 1] : [0.98, 1, 1, 0.98]);
+  const sectionY = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], isMobile ? [0, 0, 0, 0] : [50, 0, 0, -50]);
   
-  const headerX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [-100, 0, 0, 100]);
-  const descX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [100, 0, 0, -100]);
+  const headerX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], isMobile ? [0, 0, 0, 0] : [-50, 0, 0, 50]);
+  const descX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], isMobile ? [0, 0, 0, 0] : [50, 0, 0, -50]);
 
   return (
-    <section ref={sectionRef} id="projects" className="relative w-full bg-[#030303] px-6 md:px-12 pt-40 pb-10 overflow-hidden text-white flex flex-col items-center select-none">
+    <section ref={sectionRef} id="projects" className="relative w-full bg-[#030303] px-6 md:px-12 pt-20 md:pt-40 pb-10 overflow-hidden text-white flex flex-col items-center select-none">
       
       {/* Background Decor */}
       <div className="absolute inset-0 bg-grid-white opacity-[0.015] pointer-events-none" />
-      <div className="absolute top-1/2 left-0 w-[1000px] h-[1000px] bg-[#0f0122] opacity-40 rounded-full blur-[180px] -translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+      <div className="absolute top-1/2 left-0 w-[350px] md:w-[900px] h-[350px] md:h-[900px] bg-[#0f0122] opacity-40 rounded-full blur-[70px] md:blur-[160px] -translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
       <motion.div 
         style={{ opacity: sectionOpacity, scale: sectionScale, y: sectionY }}
         className="container max-w-[1400px] mx-auto relative z-10"
       >
-        <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-12 mb-32 overflow-visible">
+        <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-8 md:gap-12 mb-20 md:mb-32 overflow-visible">
           <motion.div style={{ x: headerX }} className="flex-1 w-full">
             <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20 mb-6 block">04 / SELECTED WORKS</span>
             <h2 className="text-5xl sm:text-7xl md:text-9xl font-display font-black tracking-tighter text-white uppercase leading-[0.8]">
@@ -131,7 +139,11 @@ const Project = () => {
                     <img 
                       src={project.image} 
                       alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 group-hover:rotate-1"
+                      loading="lazy"
+                      decoding="async"
+                      width="600"
+                      height="450"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
                     

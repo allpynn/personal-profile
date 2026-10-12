@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import logoImg from "../assets/image/logo.png";
+import logoImg from "../assets/image/logo.webp";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,25 +13,33 @@ const Navbar = () => {
   // Constants
   const PREMIUM_EASE = [0.16, 1, 0.3, 1];
 
-  // Hide on scroll down, show on scroll up
+  // RAF throttled scroll handler for zero scroll jank
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
 
-      if (currentScrollY < 10) {
-        setIsVisible(true);
-        setIsScrolled(false);
-      } else if (currentScrollY > lastScrollY.current + 5) {
-        // Scrolling down
-        if (!isOpen) setIsVisible(false);
-        setIsScrolled(true);
-      } else if (currentScrollY < lastScrollY.current - 5) {
-        // Scrolling up
-        setIsVisible(true);
-        setIsScrolled(true);
+          if (currentScrollY < 10) {
+            setIsVisible(true);
+            setIsScrolled(false);
+          } else if (currentScrollY > lastScrollY.current + 8) {
+            // Scrolling down
+            if (!isOpen) setIsVisible(false);
+            setIsScrolled(true);
+          } else if (currentScrollY < lastScrollY.current - 8) {
+            // Scrolling up
+            setIsVisible(true);
+            setIsScrolled(true);
+          }
+
+          lastScrollY.current = currentScrollY;
+          ticking = false;
+        });
+        ticking = true;
       }
-
-      lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -124,7 +132,7 @@ const Navbar = () => {
           {/* Logo Monogram — Mobile Left */}
           <div className="md:hidden">
             <button onClick={scrollToTop} className="flex items-center focus:outline-none">
-              <img src={logoImg} alt="Logo" className="w-9 h-9 object-contain drop-shadow-[0_0_8px_rgba(168,85,247,0.3)]" />
+              <img src={logoImg} alt="Logo" width="36" height="36" decoding="async" className="w-9 h-9 object-contain drop-shadow-[0_0_8px_rgba(168,85,247,0.3)]" />
             </button>
           </div>
 
@@ -164,7 +172,7 @@ const Navbar = () => {
               transition={{ duration: 0.6, ease: PREMIUM_EASE }}
               className="relative z-10"
             >
-              <img src={logoImg} alt="Logo" className="w-10 h-10 object-contain drop-shadow-[0_0_8px_rgba(168,85,247,0.3)] hover:scale-105 transition-transform" />
+              <img src={logoImg} alt="Logo" width="40" height="40" decoding="async" className="w-10 h-10 object-contain drop-shadow-[0_0_8px_rgba(168,85,247,0.3)] hover:scale-105 transition-transform" />
             </motion.div>
 
             <AnimatePresence>

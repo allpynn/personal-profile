@@ -1,9 +1,17 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Github, Linkedin, Instagram, Mail, ArrowUp, Send } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile, { passive: true });
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -11,12 +19,12 @@ const Footer = () => {
     offset: ["start end", "end start"]
   });
 
-  const sectionOpacity = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], [0, 1, 1, 0]);
-  const sectionScale = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], [0.95, 1, 1, 0.95]);
-  const sectionY = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], [50, 0, 0, -50]);
+  const sectionOpacity = useTransform(scrollYProgress, [0, 0.2, 0.85, 1], [0, 1, 1, 0]);
+  const sectionScale = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], isMobile ? [1, 1, 1, 1] : [0.98, 1, 1, 0.98]);
+  const sectionY = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], isMobile ? [0, 0, 0, 0] : [50, 0, 0, -50]);
   
-  const headerX = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], [-100, 0, 0, 100]);
-  const formY = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], [100, 0, 0, -100]);
+  const headerX = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], isMobile ? [0, 0, 0, 0] : [-50, 0, 0, 50]);
+  const formY = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], isMobile ? [0, 0, 0, 0] : [50, 0, 0, -50]);
 
   const socialLinks = [
     { icon: Github, href: "https://github.com/allpynn", label: "GitHub", handle: "@allpynn" },
@@ -30,21 +38,17 @@ const Footer = () => {
   };
 
   return (
-    <footer ref={sectionRef} id="contact" className="relative w-full bg-[#030303] pt-40 pb-10 overflow-hidden text-white flex flex-col items-center">
+    <footer ref={sectionRef} id="contact" className="relative w-full bg-[#030303] pt-20 md:pt-40 pb-10 overflow-hidden text-white flex flex-col items-center">
 
-      {/* Kinetic Marquee Top */}
-      <div className="absolute top-0 w-full overflow-hidden border-y border-white/5 py-4 bg-[#0f0122] opacity-30">
-        <motion.div
-          animate={{ x: [0, -1000] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="flex whitespace-nowrap gap-20"
-        >
-          {[...Array(10)].map((_, i) => (
+      {/* Kinetic Marquee Top - CSS Hardware Accelerated */}
+      <div className="absolute top-0 w-full overflow-hidden border-y border-white/5 py-4 bg-[#0f0122] opacity-30 select-none pointer-events-none">
+        <div className="flex whitespace-nowrap gap-20 animate-marquee will-change-transform">
+          {[...Array(6)].map((_, i) => (
             <span key={i} className="text-[10px] font-black uppercase tracking-[0.5em] text-white/40">
               GET IN TOUCH • AVAILABLE FOR HIRE • COLLABORATE • LET'S BUILD SOMETHING •
             </span>
           ))}
-        </motion.div>
+        </div>
       </div>
 
       {/* Decorative Background Text */}
@@ -54,7 +58,7 @@ const Footer = () => {
 
       {/* Background Decor */}
       <div className="absolute inset-0 bg-grid-white opacity-[0.01] pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-[#0f0122] opacity-40 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[350px] md:w-[800px] h-[350px] md:h-[800px] bg-[#0f0122] opacity-40 rounded-full blur-[70px] md:blur-[150px] pointer-events-none" />
 
       <motion.div
         style={{ opacity: sectionOpacity, scale: sectionScale, y: sectionY }}

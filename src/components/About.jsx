@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Instagram, Download, ExternalLink, MapPin } from "lucide-react";
-import profileImg from "../assets/image/fotoprofile.png";
+import profileImg from "../assets/image/fotoprofile.webp";
 
 const About = () => {
   const containerVariants = {
@@ -9,7 +9,7 @@ const About = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        staggerChildren: 0.15,
       },
     },
   };
@@ -17,21 +17,17 @@ const About = () => {
   const itemVariants = {
     hidden: {
       opacity: 0,
-      x: -50,
-      scale: 0.98,
-      filter: "blur(10px)",
+      y: 20,
       transition: {
-        duration: 0.8,
+        duration: 0.6,
         ease: [0.16, 1, 0.3, 1],
       },
     },
     visible: {
       opacity: 1,
-      x: 0,
-      scale: 1,
-      filter: "blur(0px)",
+      y: 0,
       transition: {
-        duration: 1,
+        duration: 0.8,
         ease: [0.16, 1, 0.3, 1],
       },
     },
@@ -44,8 +40,8 @@ const About = () => {
     >
       {/* --- BACKGROUND ELEMENTS --- */}
       <div className="absolute inset-0 bg-grid-white opacity-[0.03] pointer-events-none" />
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-white/5 rounded-full blur-[60px] md:blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-white/5 rounded-full blur-[60px] md:blur-[120px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-[1400px] mx-auto">
         {/* --- WATERMARK TEXT --- */}
@@ -59,7 +55,7 @@ const About = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: false, amount: 0.15, margin: "0px 0px -100px 0px" }}
+          viewport={{ once: true, amount: 0.15 }}
           className="flex flex-col lg:flex-row items-center gap-16 lg:gap-32 relative mt-6 md:mt-12"
         >
           {/* --- LEFT CONTENT --- */}
@@ -141,6 +137,10 @@ const About = () => {
               <img
                 src={profileImg}
                 alt="Alvin Khoirul"
+                loading="lazy"
+                decoding="async"
+                width="450"
+                height="562"
                 className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
@@ -149,8 +149,9 @@ const About = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 30 }}
                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute bottom-0 left-0 right-4 sm:right-6 p-5 sm:p-7 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-[2.5rem] flex flex-col gap-5 sm:gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] group/card hover:bg-white/[0.05] transition-colors duration-500"
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute bottom-0 left-0 right-4 sm:right-6 p-5 sm:p-7 bg-zinc-950/80 sm:bg-white/[0.04] backdrop-blur-md border border-white/10 rounded-[2.5rem] flex flex-col gap-5 sm:gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] group/card hover:bg-white/[0.05] transition-colors duration-500"
               >
                 {/* TOP ROW: ROLE & STATUS */}
                 <div className="flex justify-between items-start">

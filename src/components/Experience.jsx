@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import ScrollReveal from "./Reactbits/ScrollReveal";
 
@@ -35,24 +35,33 @@ const Experience = () => {
   ];
 
   const sectionRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile, { passive: true });
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"]
   });
 
-  const sectionOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const sectionScale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.9, 1, 1, 0.9]);
-  const sectionY = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [100, 0, 0, -100]);
+  const sectionOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
+  const sectionScale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], isMobile ? [1, 1, 1, 1] : [0.98, 1, 1, 0.98]);
+  const sectionY = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], isMobile ? [0, 0, 0, 0] : [50, 0, 0, -50]);
   
-  const headerX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [-100, 0, 0, 100]);
-  const descX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [100, 0, 0, -100]);
+  const headerX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], isMobile ? [0, 0, 0, 0] : [-50, 0, 0, 50]);
+  const descX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], isMobile ? [0, 0, 0, 0] : [50, 0, 0, -50]);
 
   return (
-    <section ref={sectionRef} id="experience" className="bg-black pt-10 pb-40 relative overflow-hidden flex flex-col items-center">
+    <section ref={sectionRef} id="experience" className="bg-black pt-10 pb-24 md:pb-40 relative overflow-hidden flex flex-col items-center">
 
       {/* Background Decor */}
       <div className="absolute inset-0 bg-grid-white opacity-[0.02] pointer-events-none" />
-      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#0f0122] opacity-40 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[350px] md:w-[800px] h-[350px] md:h-[800px] bg-[#0f0122] opacity-40 rounded-full blur-[70px] md:blur-[150px] pointer-events-none" />
 
       <motion.div 
         style={{ opacity: sectionOpacity, scale: sectionScale, y: sectionY }}

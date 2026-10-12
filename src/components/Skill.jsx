@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import LogoLoop from "./Reactbits/LogoLoop";
 import ScrollReveal from "./Reactbits/ScrollReveal";
@@ -34,18 +34,26 @@ const TOOLS = [
 
 const Skill = () => {
   const sectionRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile, { passive: true });
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
   
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"]
   });
 
-  const sectionOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const sectionScale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.9, 1, 1, 0.9]);
-  const sectionY = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [100, 0, 0, -100]);
+  const sectionOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
+  const sectionScale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], isMobile ? [1, 1, 1, 1] : [0.98, 1, 1, 0.98]);
+  const sectionY = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], isMobile ? [0, 0, 0, 0] : [50, 0, 0, -50]);
   
-  const headerX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [-100, 0, 0, 100]);
-  const descX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [100, 0, 0, -100]);
+  const headerX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], isMobile ? [0, 0, 0, 0] : [-50, 0, 0, 50]);
+  const descX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], isMobile ? [0, 0, 0, 0] : [50, 0, 0, -50]);
 
   const getIconUrl = (slug) => {
     const deviconList = [
@@ -77,11 +85,11 @@ const Skill = () => {
   }), []);
 
   return (
-    <section ref={sectionRef} id="skills" className="relative w-full bg-black px-6 md:px-12 py-32 overflow-hidden text-white flex flex-col items-center select-none">
+    <section ref={sectionRef} id="skills" className="relative w-full bg-black px-6 md:px-12 py-20 md:py-32 overflow-hidden text-white flex flex-col items-center select-none">
 
       <div className="absolute inset-0 bg-grid-white opacity-[0.02] pointer-events-none" />
-      <div className="absolute top-1/2 right-0 w-[800px] h-[800px] bg-[#0f0122] opacity-40 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-[#0f0122] opacity-30 rounded-full blur-[150px] translate-y-1/3 -translate-x-1/3 pointer-events-none" />
+      <div className="absolute top-1/2 right-0 w-[350px] md:w-[800px] h-[350px] md:h-[800px] bg-[#0f0122] opacity-40 rounded-full blur-[70px] md:blur-[150px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[350px] md:w-[800px] h-[350px] md:h-[800px] bg-[#0f0122] opacity-30 rounded-full blur-[70px] md:blur-[150px] translate-y-1/3 -translate-x-1/3 pointer-events-none" />
 
       <motion.div
         style={{ opacity: sectionOpacity, scale: sectionScale, y: sectionY }}
@@ -121,6 +129,9 @@ const Skill = () => {
                   src={getIconUrl(tech.icon)}
                   alt={tech.name}
                   loading="lazy"
+                  decoding="async"
+                  width="48"
+                  height="48"
                   className="w-10 h-10 md:w-12 md:h-12 grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
                   onError={(e) => { e.target.src = `https://cdn.simpleicons.org/${tech.icon}/white`; }}
                 />

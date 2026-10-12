@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import LightRays from "./LightRays";
 
 const Hero = () => {
   const { scrollY } = useScroll();
-  const moveLeft1 = useTransform(scrollY, [0, 800], [0, -350]);
-  const moveRight = useTransform(scrollY, [0, 800], [0, 350]);
-  const moveLeft2 = useTransform(scrollY, [0, 800], [0, -400]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile, { passive: true });
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const moveLeft1 = useTransform(scrollY, [0, 800], isMobile ? [0, 0] : [0, -350]);
+  const moveRight = useTransform(scrollY, [0, 800], isMobile ? [0, 0] : [0, 350]);
+  const moveLeft2 = useTransform(scrollY, [0, 800], isMobile ? [0, 0] : [0, -400]);
 
   // Fade hero content as user scrolls away
   const heroOpacity = useTransform(scrollY, [0, 500], [1, 0]);
@@ -14,10 +25,10 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative min-h-[90vh] w-full overflow-hidden bg-black flex flex-col justify-center items-center pt-24 pb-8 px-6 md:px-12 select-none"
+      className="relative min-h-[90vh] w-full overflow-hidden bg-black flex flex-col justify-center items-center pt-24 pb-8 px-4 sm:px-6 md:px-12 select-none"
     >
-      {/* LIGHT RAYS WebGL BACKGROUND */}
-      <div className="absolute inset-0 z-0 opacity-60">
+      {/* LIGHT RAYS WebGL BACKGROUND (Desktop) / CSS Ambient (Mobile) */}
+      <div className="absolute inset-0 z-0 opacity-60 pointer-events-none">
         <LightRays
           raysOrigin="top-center"
           raysColor="#2a1b4d"
@@ -26,7 +37,7 @@ const Hero = () => {
           rayLength={1.5}
           fadeDistance={0.8}
           saturation={0.8}
-          followMouse={true}
+          followMouse={!isMobile}
           mouseInfluence={0.08}
           noiseAmount={0.05}
           distortion={0.05}
@@ -34,10 +45,10 @@ const Hero = () => {
         />
       </div>
 
-      {/* --- BACKGROUND ELEMENTS --- */}
+      {/* --- BACKGROUND ELEMENTS (Optimized for Mobile GPU) --- */}
       <div className="absolute inset-0 bg-grid-white opacity-[0.03] pointer-events-none" />
-      <div className="absolute top-[-10%] right-[-10%] w-[1000px] h-[1000px] bg-[#0f0122] opacity-60 rounded-full blur-[180px] pointer-events-none z-[1]" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[1000px] h-[1000px] bg-[#1a0b3d] opacity-40 rounded-full blur-[180px] pointer-events-none z-[1]" />
+      <div className="absolute top-[-10%] right-[-10%] w-[320px] sm:w-[500px] md:w-[900px] h-[320px] sm:h-[500px] md:h-[900px] bg-[#0f0122] opacity-60 rounded-full blur-[80px] md:blur-[160px] pointer-events-none z-[1]" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[320px] sm:w-[500px] md:w-[900px] h-[320px] sm:h-[500px] md:h-[900px] bg-[#1a0b3d] opacity-40 rounded-full blur-[80px] md:blur-[160px] pointer-events-none z-[1]" />
 
       {/* Dark overlay so text stays readable */}
       <div className="absolute inset-0 bg-black/50 z-[2] pointer-events-none" />
@@ -56,7 +67,7 @@ const Hero = () => {
               animate={{ y: 0, opacity: 1 }}
               style={{ x: moveLeft1 }}
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              className="font-display font-extrabold text-[#F5F5F5] leading-[0.8] tracking-tighter text-[13vw] md:text-[8vw] lg:text-[6.5vw] uppercase whitespace-nowrap drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+              className="font-display font-extrabold text-[#F5F5F5] leading-[0.85] tracking-tighter text-[12vw] sm:text-[10vw] md:text-[8vw] lg:text-[6.5vw] uppercase whitespace-nowrap drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]"
             >
               I BUILD
             </motion.h1>
@@ -69,7 +80,7 @@ const Hero = () => {
               animate={{ y: 0, opacity: 1 }}
               style={{ x: moveRight, WebkitTextStroke: "1px rgba(99, 102, 241, 0.8)" }}
               transition={{ duration: 1.2, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="font-display font-black text-transparent leading-[0.8] tracking-tighter text-[14vw] md:text-[9vw] lg:text-[7.5vw] uppercase py-2 drop-shadow-[0_0_50px_rgba(99,102,241,0.3)] whitespace-nowrap"
+              className="font-display font-black text-transparent leading-[0.85] tracking-tighter text-[12vw] sm:text-[11vw] md:text-[9vw] lg:text-[7.5vw] uppercase py-2 drop-shadow-[0_0_50px_rgba(99,102,241,0.3)] whitespace-nowrap"
             >
               IMPRESSIVE
             </motion.h1>
@@ -105,7 +116,7 @@ const Hero = () => {
               animate={{ y: 0, opacity: 1 }}
               style={{ x: moveLeft2 }}
               transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-indigo-300 via-indigo-100 to-purple-500 leading-[0.85] tracking-tighter text-[13vw] md:text-[8.5vw] lg:text-[7vw] uppercase pb-4 whitespace-nowrap"
+              className="font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-indigo-300 via-indigo-100 to-purple-500 leading-[0.85] tracking-tighter text-[11vw] sm:text-[10vw] md:text-[8.5vw] lg:text-[7vw] uppercase pb-4 whitespace-nowrap"
             >
               EXPERIENCES.
             </motion.h1>
